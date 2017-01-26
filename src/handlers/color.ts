@@ -5,7 +5,7 @@ import { clamp, formatNumber } from '../internal';
 let context: CanvasRenderingContext2D;
 
 /**
- * Parses the color string into RGBA channels 
+ * Parses the color string into RGBA channels
  */
 export const parseColor = (str: string): [number, number, number, number] => {
   str = str.trim();
@@ -30,7 +30,7 @@ export const parseColor = (str: string): [number, number, number, number] => {
 /**
  * Combines two colors and returns in rgba() format
  */
-export const mixColor = (x: [number, number, number, number]) => {
+export const formatColor = (x: [number, number, number, number]) => {
   const a = x[3];
 
   return 'rgba('
