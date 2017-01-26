@@ -1,4 +1,4 @@
-import { clamp, formatNumber } from './number';
+import { clamp, formatNumber } from '../internal';
 
 const canvas = document.createElement('canvas');
 canvas.width = canvas.height = 1;

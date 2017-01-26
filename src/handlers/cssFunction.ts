@@ -1,4 +1,5 @@
 import { IParsedValue } from '../types';
+import { range } from '../internal';
 
 const cssFunctionRegex = /([a-z-]+)\(([^\)]+)\)/ig;
 
@@ -15,10 +16,3 @@ export const parseCssFunction = (cssFnString: string): IParsedValue => {
   };
 };
 
-function range(start: number, length: number): number[] {
-    const result: number[] = [];
-    for (let i = start, len = start + length; i < len; i++) {
-        result.push(0)
-    }
-    return result;
-}
