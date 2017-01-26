@@ -4,12 +4,17 @@
  */
 
 /**
- * Stub function describing the exact type of the flow function.  The "flow" function below uses this type which avoids generating
- * an extra function from the spread operator.
+ * A function that takes in a single parameter and returns a single result
  */
-function flowSignature<T1, T2>(..._: {(a: any): any}[]): (t1: T1) => T2 {
+type Func = (a: any) => any;
+
+/**
+ * Stub function describing the exact type of the flow function.  The "flow" function below uses this type which avoids generating
+ * an extra array for the spread operator
+ */
+const flowSignature = <T1, T2>(...functions: Func[]): (t1: T1) => T2 => {
   throw 'do not use';
-}
+};
 
 /**
  * Returns a function that passes each function in sequence, passing the result of each function to the next.  Useful for chaining together pure functions 
