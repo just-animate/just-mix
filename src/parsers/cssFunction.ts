@@ -6,7 +6,7 @@ export const parseCssFunction = (cssFnString: string): IParsedValue => {
   const matches = cssFunctionRegex.exec(cssFnString);
   if (!matches || !matches.length) {
     throw new Error('could not parse css function');
-  } 
+  }
   const cssArguments = matches[2].split(',');
 
   return {
@@ -21,4 +21,4 @@ function range(start: number, length: number): number[] {
         result.push(0)
     }
     return result;
-} 
+}
