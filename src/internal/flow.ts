@@ -25,7 +25,7 @@ export const flow: typeof flowSignature = <T1, T2>() => {
   const f = arguments;
   const len = f.length;
   return (t1: T1): T2 => {
-    let i = 0;
+    let i = -1;
     let r = t1;
     while (++i < len) {
       r = f[i](r);
