@@ -1,11 +1,8 @@
 const cssFunctionRegex = /([a-z\-]+)\(([^\)]+)\)/i;
 
-export const parseCssFunction = (cssFnString: string): string[] => {
-  const matches = cssFunctionRegex.exec(cssFnString);
-  if (!matches || !matches.length) {
-    throw new Error('could not parse css function');
-  }
-  return [matches[1]].concat(matches[2].split(','));
+export const parseCssFunction = (str: string): string[] | undefined => {
+  const m = cssFunctionRegex.exec(str);
+  return !m || !m.length ? undefined : [m[1]].concat(m[2].split(','));
 };
 
 export const formatCssFunction = (x: string[]) => {

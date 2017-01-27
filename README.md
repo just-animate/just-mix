@@ -57,7 +57,3 @@ import { length } from 'just-mix';
 
 const fivePixels = length('0', '10px', .5);
 ```
-
-## Contributing
-
-Please see [contributing.md](/docs/contributing.md) for guidelines and help for running this project locally.
