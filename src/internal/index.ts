@@ -1,2 +1,3 @@
 export * from './flow';
-export * from './number';
+export * from './math';
+export * from './mixer';

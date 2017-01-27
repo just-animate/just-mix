@@ -1,5 +1,5 @@
-import { clamp, formatNumber } from '../internal';
-import { parseCssFunction, parsePercent } from '../handlers';
+import { clamp } from '../internal';
+import { formatNumber, parseCssFunction, parsePercent } from '../handlers';
 
 const hexRegex = /#(([a-f0-9]{6})|([a-f0-9]{3}))$/i;
 

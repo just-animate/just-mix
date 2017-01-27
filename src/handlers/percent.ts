@@ -1,4 +1,4 @@
-import { formatNumber } from '../internal';
+import { formatNumber } from './number';
 
 export const parsePercent = (value: string): number => {
   return parseFloat(value) * .01;
