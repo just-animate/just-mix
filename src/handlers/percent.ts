@@ -1,9 +1,5 @@
-import { formatNumber } from './number';
+import { formatNumber, parseNumber } from './number';
 
-export const parsePercent = (value: string): number => {
-  return parseFloat(value) * .01;
-};
+export const formatPercent = (value: number) => formatNumber(value * 100) + '%';
+export const parsePercent = (value: string) => parseNumber(value) * .01;
 
-export const formatPercent = (value: number): string => {
-  return formatNumber(value * 100) + '%';
-};

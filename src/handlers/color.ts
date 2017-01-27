@@ -1,5 +1,5 @@
 import { clamp } from '../internal';
-import { formatNumber, parseCssFunction, parsePercent } from '../handlers';
+import { formatNumber, interpolateNumber, parseCssFunction, parsePercent } from '../handlers';
 
 const hexRegex = /#(([a-f0-9]{6})|([a-f0-9]{3}))$/i;
 
@@ -232,15 +232,6 @@ const parseColorFunction = (colorString: string): Channels | undefined => {
   return undefined;
 };
 
-
-/**
- * Parses the color string into RGBA channels
- */
-export const parseColor = (input: string): Channels => {
-  const str = input.trim().toLowerCase();
-  return parseNamedColor(str) || parseHexCode(str) || parseColorFunction(str) || [0, 0, 0, 1];
-};
-
 /**
  * Combines two colors and returns in rgba() format
  */
@@ -253,3 +244,21 @@ export const formatColor = (x: Channels) => {
     + (a ? clamp(0, 255, x[2] / a) : x[2]) + ','
     + formatNumber(clamp(0, 1, a)) + ')';
 };
+
+export const interpolateColor = (l: Channels, r: Channels, o: number): Channels => {
+  return [
+    interpolateNumber(l[0], r[0], o),
+    interpolateNumber(l[1], r[1], o),
+    interpolateNumber(l[2], r[2], o),
+    interpolateNumber(l[3], r[3], o)
+  ]
+}
+
+/**
+ * Parses the color string into RGBA channels
+ */
+export const parseColor = (input: string): Channels => {
+  const str = input.trim().toLowerCase();
+  return parseNamedColor(str) || parseHexCode(str) || parseColorFunction(str) || [0, 0, 0, 1];
+};
+
