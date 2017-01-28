@@ -7,27 +7,28 @@
 
 ## Why use Just Mix?
 
-- Simple CSS datatype detection and interpolation
+- Simple CSS value parsing and interpolation
 - Handles colors, lengths, percentages, etc.
 - Small download size with no dependencies
 
 > Power this project up with 🌟s,  [^ star it please](https://github.com/just-animate/just-mix/stargazers).
 
-## Getting Started
+## Setup
 
-### Setup from CDN
+### Setup using a CDN
 Include this script
 ```html
 <script src="https://unpkg.com/just-mix/dist/just-mix.min.js"></script>
 ```
 
-### Setup for bundling
+### Setup for bundling (or if you need typings for TypeScript)
 
 ```bash
 npm install just-mix --save
 ```
 
-## Mix a lot!
+
+## API
 
 ### colors (left, right, weight) => color3
 Finds a color between two colors.  Weight is a ratio between 0 and 1 to use for mixing the colors
