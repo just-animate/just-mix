@@ -2,8 +2,7 @@
 
 *Mix and interpolate colors, css units, and more!*
 
-[![Build Status][travis-image]][travis-url]
-[![NPM version][npm-image]][npm-url]
+[![Build Status](https://travis-ci.org/just-animate/just-mix.svg?branch=master)](https://travis-ci.org/just-animate/just-mix)
 
 ## Why use Just Mix?
 
