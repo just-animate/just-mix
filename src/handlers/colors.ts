@@ -1,10 +1,10 @@
-import { clamp } from '../internal';
-import { formatNumber, interpolateNumber, parseCssFunction, parsePercent } from '../handlers';
+import { clamp, mixer } from '../internal';
+import { numbers, percents, parseCssFunction } from '../handlers';
+
 
 const hexRegex = /#(([a-f0-9]{6})|([a-f0-9]{3}))$/i;
 
-const
-  R = 0, G = 1, B = 2,
+const R = 0, G = 1, B = 2,
   H = 0, S = 1, L = 2;
 
 type Channels = [number, number, number, number];
@@ -151,25 +151,28 @@ const parseHexCode = (stringValue: string): Channels | undefined  => {
   return [r, g, b, 1];
 };
 
-const toRGB = (cc: Channels): void => {
-  const s = cc[S];
+const toRGB = (channels: Channels): void => {
+  const saturation = channels[S];
 
   // when saturation is 0, all channels equal lightness * 255
-  if (s === 0) {
-    cc[R] = cc[G] = cc[B] = cc[L] * 255;
+  if (saturation === 0) {
+    channels[R] = channels[G] = channels[B] = channels[L] * 255;
     return;
   }
 
-  const h = cc[H] / 360;
-  const l = cc[L];
+  const hue = channels[H] / 360;
+  const lightness = channels[L];
 
-  const t2 = l < .5 ? l * (1 + s) : l + s - l * s;
-  const t1 = 2 * l - t2;
+  const t2 = lightness < .5
+    ? lightness * (1 + saturation)
+    : lightness + saturation - lightness * saturation;
 
-  let r = 0, g = 0, b = 0;
+  const t1 = 2 * lightness - t2;
+
+  let red = 0, green = 0, blue = 0;
   let i = -1;
   while (++i < 3) {
-    let t3 = h + 1 / 3 * -(i - 1);
+    let t3 = hue + 1 / 3 * -(i - 1);
     if (t3 < 0) {
       ++t3;
     }
@@ -184,17 +187,17 @@ const toRGB = (cc: Channels): void => {
 
     // manually set variables instead of using an array
     if (i === 0) {
-      r = val;
+      red = val;
     } else if (i === 1) {
-      g = val;
+      green = val;
     } else {
-      b = val;
+      blue = val;
     }
   }
 
-  cc[R] = r;
-  cc[G] = g;
-  cc[B] = b;
+  channels[R] = red;
+  channels[G] = green;
+  channels[B] = blue;
 };
 
 const parseColorFunction = (colorString: string): Channels | undefined => {
@@ -221,8 +224,8 @@ const parseColorFunction = (colorString: string): Channels | undefined => {
   if (fn === 'hsla' || fn === 'hsl') {
     const hsla: Channels = [
       parseFloat(c[1]),
-      parsePercent(c[2]),
-      parsePercent(c[3]),
+      percents.parse(c[2]),
+      percents.parse(c[3]),
       hasAlpha ? parseFloat(c[4]) : 1
     ];
     toRGB(hsla);
@@ -232,33 +235,25 @@ const parseColorFunction = (colorString: string): Channels | undefined => {
   return undefined;
 };
 
-/**
- * Combines two colors and returns in rgba() format
- */
-export const formatColor = (x: Channels) => {
-  const a = x[3];
-
-  return 'rgba('
-    + (a ? clamp(0, 255, x[0] / a) : x[0]) + ','
-    + (a ? clamp(0, 255, x[1] / a) : x[1]) + ','
-    + (a ? clamp(0, 255, x[2] / a) : x[2]) + ','
-    + formatNumber(clamp(0, 1, a)) + ')';
-};
-
-export const interpolateColor = (l: Channels, r: Channels, o: number): Channels => {
-  return [
-    interpolateNumber(l[0], r[0], o),
-    interpolateNumber(l[1], r[1], o),
-    interpolateNumber(l[2], r[2], o),
-    interpolateNumber(l[3], r[3], o)
-  ]
-}
-
-/**
- * Parses the color string into RGBA channels
- */
-export const parseColor = (input: string): Channels => {
-  const str = input.trim().toLowerCase();
-  return parseNamedColor(str) || parseHexCode(str) || parseColorFunction(str) || [0, 0, 0, 1];
-};
-
+export const colors = mixer({
+  parse(input: string): Channels {
+    const str = input.trim().toLowerCase();
+    return parseNamedColor(str) || parseHexCode(str) || parseColorFunction(str) || [0, 0, 0, 1];
+  },
+  format(x: Channels): string {
+    const a = x[3];
+    return 'rgba('
+      + (a ? clamp(0, 255, x[0] / a) : x[0]) + ','
+      + (a ? clamp(0, 255, x[1] / a) : x[1]) + ','
+      + (a ? clamp(0, 255, x[2] / a) : x[2]) + ','
+      + numbers.format(clamp(0, 1, a)) + ')';
+  },
+  interpolate(l: Channels, r: Channels, o: number): Channels {
+    return [
+      numbers.interpolate(l[0], r[0], o),
+      numbers.interpolate(l[1], r[1], o),
+      numbers.interpolate(l[2], r[2], o),
+      numbers.interpolate(l[3], r[3], o)
+    ];
+  }
+});

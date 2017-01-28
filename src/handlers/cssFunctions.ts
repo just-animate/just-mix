@@ -8,3 +8,4 @@ export const parseCssFunction = (str: string): string[] | undefined => {
 export const formatCssFunction = (x: string[]) => {
   return x[0] + '(' + x.slice(1).join(',') + ')';
 };
+
