@@ -1,7 +1,7 @@
 import { mixer } from '../internal';
 
 export const numbers = mixer({
-  parse(n: string): number {
+  parse(n: string | number): number {
     return typeof n === 'number' ? n : parseFloat(n);
   },
   format(n: number): string {

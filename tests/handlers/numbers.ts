@@ -38,16 +38,16 @@ describe('number', () => {
 
   describe('numbers()', () => {
     it('0, 1, 0 = 0', () => {
-      assert.equal('0', numbers('0', '1', 0));
+      assert.equal(0, numbers(0, 1, 0));
     });
     it('0, 1, .5 = .5', () => {
-      assert.equal('0.500', numbers('0', '1', .5));
+      assert.equal(.5, numbers(0, 1, .5));
     });
     it('.5, 1, .5 = .75', () => {
-      assert.equal('0.750', numbers('.5', '1', .5));
+      assert.equal(.750, numbers(.5, 1, .5));
     });
     it('0, 1, 1 = 1', () => {
-      assert.equal('1', numbers('0', '1', 1));
+      assert.equal(1, numbers(0, 1, 1));
     });
   });
 });

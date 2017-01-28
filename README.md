@@ -49,7 +49,7 @@ const purple3 = colors('rgb(255, 0, 0)', 'blue', .5);
 const purple4 = colors('hsla(0, 100%, 50%, 1)', 'blue', .5);
 ```
 
-### lengths(left, right, weight) => color1
+### lengths(left, right, weight) => length
 Finds a length between two lengths.  Weight is a ratio between 0 and 1 to use for mixing the lengths
 
 **Browser**
@@ -66,4 +66,36 @@ import { lengths } from 'just-mix';
 const fivePixels = lengths('0px', '10px', .5);
 const fiveEms = lengths('0em', '10em', .5);
 const fiveRems = lengths('0rem', '10rem', .5);
+```
+
+### numbers(left, right, weight) => number
+Finds a number between two numbers.  Weight is a ratio between 0 and 1 to use for mixing the numbers
+
+**Browser**
+```ts
+const fiveA = just.mix.numbers('0', '10', .5);
+const fiveB = just.mix.numbers(0, 10, .5);
+```
+
+**Bundled**
+```ts
+import { numbers } from 'just-mix';
+
+const fiveA = numbers('0', '10', .5);
+const fiveB = numbers(0, 10, .5);
+```
+
+### percents(left, right, weight) => percentage
+Finds a percentage between two percentages.  Weight is a ratio between 0 and 1 to use for mixing the percentages
+
+**Browser**
+```ts
+const fivePercent = just.mix.percents('0%', '10%', .5);
+```
+
+**Bundled**
+```ts
+import { percents } from 'just-mix';
+
+const fivePercent = percents('0%', '10%', .5);
 ```
