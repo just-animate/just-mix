@@ -1,7 +1,7 @@
 import { clamp, mixer } from '../internal';
 import { numbers, percents, parseCssFunction } from '../handlers';
 
-
+const round = Math.round;
 const hexRegex = /#(([a-f0-9]{6})|([a-f0-9]{3}))$/i;
 
 const R = 0, G = 1, B = 2,
@@ -250,9 +250,9 @@ export const colors = mixer({
   },
   interpolate(l: Channels, r: Channels, o: number): Channels {
     return [
-      numbers.interpolate(l[0], r[0], o),
-      numbers.interpolate(l[1], r[1], o),
-      numbers.interpolate(l[2], r[2], o),
+      round(numbers.interpolate(l[0], r[0], o)),
+      round(numbers.interpolate(l[1], r[1], o)),
+      round(numbers.interpolate(l[2], r[2], o)),
       numbers.interpolate(l[3], r[3], o)
     ];
   }

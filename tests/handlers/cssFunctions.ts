@@ -3,7 +3,7 @@ import * as assert from 'assert';
 
 describe('cssFunction', () => {
 
-  describe('formatCssFunction()', () => {
+  describe('format()', () => {
     it('formats [url, #id] as url(#id)', () => {
       assert.equal('url(#id)', formatCssFunction(['url', '#id']));
     });
@@ -12,7 +12,7 @@ describe('cssFunction', () => {
     });
   });
 
-  describe('parseCssFunction()', () => {
+  describe('parse()', () => {
     it('parses url(#id) as ["url", "#id"]', () => {
       assert.deepEqual(['url', '#id'], parseCssFunction('url(#id)'));
     });

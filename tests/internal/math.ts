@@ -1,7 +1,7 @@
 import { clamp } from '../../src/internal';
 import * as assert from 'assert';
 
-describe('flow()', () => {
+describe('clamp()', () => {
   it('returns min when value is less than min', () => {
     assert.equal(-1, clamp(-1, 1, -10));
   });

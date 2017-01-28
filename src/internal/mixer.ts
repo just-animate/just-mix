@@ -1,25 +1,25 @@
-interface IMixer<T1> {
-  (left: string, right: string, weight: number): string;
-  format(val: T1): string;
-  interpolate(left: T1, right: T1, weight: number): T1;
-  parse(val: string): T1;
-  optimize(values: T1[]): T1[];
+interface IMixer<TFormat, TValue> {
+  (left: TFormat, right: TFormat, weight: number): TFormat;
+  format(val: TValue): TFormat;
+  interpolate(left: TValue, right: TValue, weight: number): TValue;
+  parse(val: TFormat): TValue;
+  optimize(values: TValue[]): TValue[];
 }
 
 const returnValue = <T1>(t1: T1) => t1;
 
-export const mixer = <T>({parse, format, interpolate, optimize}: {
-  parse(t: string): T;
-  format(t: T): string;
-  interpolate(left: T, right: T, weight: number): T;
-  optimize?: (values: T[]) => T[];
+export const mixer = <TFormat, TValue>({parse, format, interpolate, optimize}: {
+  parse(t: TFormat): TValue;
+  format(t: TValue): TFormat;
+  interpolate(left: TValue, right: TValue, weight: number): TValue;
+  optimize?: (values: TValue[]) => TValue[];
 }) => {
   const optimizeFn = optimize || returnValue;
 
-  const fn = ((left: string, right: string, weight: number) => {
+  const fn = ((left: TFormat, right: TFormat, weight: number) => {
     const values = optimizeFn([parse(left), parse(right)]);
     return format(interpolate(values[0], values[1], weight));
-  }) as IMixer<T>;
+  }) as IMixer<TFormat, TValue>;
 
   fn.parse = parse;
   fn.format = format;

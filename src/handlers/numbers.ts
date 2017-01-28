@@ -2,7 +2,7 @@ import { mixer } from '../internal';
 
 export const numbers = mixer({
   parse(n: string): number {
-    return parseFloat(n);
+    return typeof n === 'number' ? n : parseFloat(n);
   },
   format(n: number): string {
     return n.toFixed(3).replace('.000', '');
