@@ -2,7 +2,9 @@
 
 *Mix and interpolate colors, css units, and more!*
 
+[![npm version](https://badge.fury.io/js/just-mix.svg)](https://badge.fury.io/js/just-mix)
 [![Build Status](https://travis-ci.org/just-animate/just-mix.svg?branch=master)](https://travis-ci.org/just-animate/just-mix)
+<!-- [![Downloads](https://img.shields.io/npm/dm/just-mix.svg)](https://www.npmjs.com/package/just-mix) -->
 
 ## Why use Just Mix?
 
