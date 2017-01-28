@@ -1,8 +1,9 @@
-(DO NOT USE!  It's not ready just yet!)
-
 # Just Mix
 
 *Mix and interpolate colors, css units, and more!*
+
+[![Build Status][travis-image]][travis-url]
+[![NPM version][npm-image]][npm-url]
 
 ## Why use Just Mix?
 
