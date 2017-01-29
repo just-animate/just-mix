@@ -3,7 +3,7 @@
  */
 type Func = (a: any) => any;
 
-const flowSignature = <T1, T2>(...parsers: Func[]): { (t1: T1): T2 } => {
+export const flowSignature = <T1, T2>(...parsers: Func[]): { (t1: T1): T2 } => {
   throw 'do not use';
 };
 

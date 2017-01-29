@@ -5,8 +5,8 @@
         "declaration": true,
         "forceConsistentCasingInFileNames": true,
         "inlineSourceMap": false,
-        "moduleResolution": "node",
         "newLine": "LF",
+        "moduleResolution": "node",
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
@@ -14,15 +14,18 @@
         "noUnusedLocals": true,
         "preserveConstEnums": false,
         "removeComments": true,
+        "rootDir": "src",
         "sourceMap": false,
         "strictNullChecks": true,
         "suppressImplicitAnyIndexErrors": true,
-        "target": "es2015"
+        "target": "es5",
+        "outDir": "lib"
     },
     "exclude": [
         "dist",
         "lib",
         "lib.es2015",
+        "tests",
         "node_modules"
     ]
 }

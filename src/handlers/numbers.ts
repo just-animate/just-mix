@@ -1,6 +1,6 @@
-import { mixer } from '../internal';
+import { mixer, IMixer } from '../internal';
 
-export const numbers = mixer({
+export const numbers: IMixer<string | number, number> = mixer({
   parse(n: string | number): number {
     return typeof n === 'number' ? n : parseFloat(n);
   },

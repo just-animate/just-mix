@@ -1,7 +1,7 @@
 import { numbers } from './numbers';
-import { mixer } from '../internal';
+import { mixer, IMixer } from '../internal';
 
-export const percents = mixer({
+export const percents: IMixer<string, number> = mixer({
   parse(value: string): number {
     return numbers.parse(value) * .01;
   },

@@ -1,4 +1,4 @@
-interface IMixer<TFormat, TValue> {
+export interface IMixer<TFormat, TValue> {
   (left: TFormat, right: TFormat, weight: number): TFormat;
   format(val: TValue): TFormat;
   interpolate(left: TValue, right: TValue, weight: number): TValue;

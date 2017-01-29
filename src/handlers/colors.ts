@@ -1,4 +1,4 @@
-import { clamp, mixer } from '../internal';
+import { clamp, mixer, IMixer } from '../internal';
 import { numbers, percents, parseCssFunction } from '../handlers';
 
 const round = Math.round;
@@ -7,7 +7,7 @@ const hexRegex = /#(([a-f0-9]{6})|([a-f0-9]{3}))$/i;
 const R = 0, G = 1, B = 2,
   H = 0, S = 1, L = 2;
 
-type Channels = [number, number, number, number];
+export type Channels = [number, number, number, number];
 
 const namedColors: { [key: string]: [number, number, number] } = {
   aliceblue: [240, 248, 245],
@@ -235,7 +235,7 @@ const parseColorFunction = (colorString: string): Channels | undefined => {
   return undefined;
 };
 
-export const colors = mixer({
+export const colors: IMixer<string, Channels> = mixer({
   parse(input: string): Channels {
     const str = input.trim().toLowerCase();
     return parseNamedColor(str) || parseHexCode(str) || parseColorFunction(str) || [0, 0, 0, 1];
