@@ -26,10 +26,8 @@ const types = {
 const isSquare = (n: number) => n && (n & (n - 1)) === 0;
 
 const getTypes = (values: LengthValue[]) => {
-  let i = -1;
   let result = 0;
-  const len = values.length;
-  while (++i < len) {
+  for (let i = 0, len = values.length; i < len; i++) {
     result |= types[values[i][1] as string];
   }
   return result;
@@ -48,12 +46,14 @@ const toPixels = (length: LengthValue): LengthValue => {
 
 export const lengths: IMixer<string, LengthValue> = mixer({
   parse(value: string): LengthValue {
-     const match = unitExpression.exec(value) as RegExpExecArray;
-     return [numbers.parse(match[1]), match[2] || nil];
+    const match = unitExpression.exec(value) as RegExpExecArray;
+    const n = numbers.parse(match[1]);
+    const unit = (n === 0 ? nil : match[2]) || nil;
+    return [n, unit];
   },
   format(value: LengthValue): string {
     const n = value[0];
-    return (n === 0 ? '0' : numbers.format(n * 100)) + value[1];
+    return n === 0 ? '0' : numbers.format(n) + (value[1] || 'px');
   },
   interpolate(left: LengthValue, right: LengthValue, weight: number): LengthValue {
     return [numbers.interpolate(left[0], right[0], weight), left[1] || right[1] || nil];
