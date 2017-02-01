@@ -1,4 +1,4 @@
-import { clamp, mixer, IMixer } from '../internal';
+import { clamp, mixer, IMixer, nil } from '../internal';
 import { numbers, percents, parseCssFunction } from '../handlers';
 
 const round = Math.round;
@@ -128,13 +128,13 @@ const namedColors: { [key: string]: [number, number, number] } = {
 
 const parseNamedColor = (stringValue: string): Channels | undefined => {
   const c = namedColors[stringValue.toLowerCase()];
-  return !c ? undefined : [c[0], c[1], c[2], c.length === 4 ? c[4] : 1];
+  return !c ? nil : [c[0], c[1], c[2], c.length === 4 ? c[4] : 1];
 };
 
 const parseHexCode = (stringValue: string): Channels | undefined  => {
   const match = stringValue.match(hexRegex);
   if (!match) {
-    return undefined;
+    return nil;
   }
 
   const hex = match[1];
@@ -203,12 +203,12 @@ const toRGB = (channels: Channels): void => {
 const parseColorFunction = (colorString: string): Channels | undefined => {
   const c = parseCssFunction(colorString);
   if (!c) {
-    return undefined;
+    return nil;
   }
   const len = c.length;
   const hasAlpha = len === 5;
   if (!c || !(len === 4 || hasAlpha)) {
-    return undefined;
+    return nil;
   }
 
   const fn = c[0];
@@ -232,7 +232,7 @@ const parseColorFunction = (colorString: string): Channels | undefined => {
     return hsla;
   }
 
-  return undefined;
+  return nil;
 };
 
 export const colors: IMixer<string, Channels> = mixer({

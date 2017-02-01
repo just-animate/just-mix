@@ -1,5 +1,6 @@
 
 export {
+  lengths,
   numbers,
   percents,
   colors

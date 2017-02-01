@@ -1,0 +1,79 @@
+import { numbers } from './numbers';
+import { mixer, IMixer, nil, inToPx, cmToPx, mmToPx } from '../internal';
+
+export type LengthValue = [number, string | undefined];
+
+const unitExpression = /^([\-]{0,1}[0-9]*[\.]{0,1}[0-9]*){1}(px|in|cm|mm|em|rem|pt|pc|ex|ch|vw|vh|vmin|vmax|%){0,1}$/i;
+
+const types = {
+  px: 1,
+  in: 2,
+  cm: 4,
+  mm: 8,
+  em: 16,
+  rem: 32,
+  pt: 64,
+  pc: 128,
+  ex: 256,
+  ch: 512,
+  vw: 1024,
+  vh: 2048,
+  vmin: 4096,
+  vmax: 8192,
+  pe: 1638
+};
+
+const isSquare = (n: number) => n && (n & (n - 1)) === 0;
+
+const getTypes = (values: LengthValue[]) => {
+  let i = -1;
+  let result = 0;
+  const len = values.length;
+  while (++i < len) {
+    result |= types[values[i][1] as string];
+  }
+  return result;
+};
+
+const toPixels = (length: LengthValue): LengthValue => {
+  const value = length[0];
+  const unit = length[1];
+  const co = unit === 'in'
+    ? inToPx : unit === 'cm'
+      ? cmToPx : unit === 'mm'
+        ? mmToPx : 1;
+
+  return [value * co, unit];
+};
+
+export const lengths: IMixer<string, LengthValue> = mixer({
+  parse(value: string): LengthValue {
+     const match = unitExpression.exec(value) as RegExpExecArray;
+     return [numbers.parse(match[1]), match[2] || nil];
+  },
+  format(value: LengthValue): string {
+    const n = value[0];
+    return (n === 0 ? '0' : numbers.format(n * 100)) + value[1];
+  },
+  interpolate(left: LengthValue, right: LengthValue, weight: number): LengthValue {
+    return [numbers.interpolate(left[0], right[0], weight), left[1] || right[1] || nil];
+  },
+  optimize(values: LengthValue[]): LengthValue[] {
+    const valueTypes = getTypes(values);
+
+    // all types are powers of two,
+    const oneType = isSquare(valueTypes);
+    const hasRelativeUnits = valueTypes >= types.em;
+
+    // if only one type is detected, no conversion is necessary
+    if (oneType) {
+      return values.slice(0);
+    }
+    // reject multiple relative units (no path for conversion right now)
+    if (hasRelativeUnits) {
+      throw `Can't mix multiple relative units`;
+    }
+    return values.map(toPixels);
+  }
+});
+

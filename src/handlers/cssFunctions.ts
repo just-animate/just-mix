@@ -1,8 +1,10 @@
+import { nil } from '../internal';
+
 const cssFunctionRegex = /([a-z\-]+)\(([^\)]+)\)/i;
 
 export const parseCssFunction = (str: string): string[] | undefined => {
   const m = cssFunctionRegex.exec(str);
-  return !m || !m.length ? undefined : [m[1]].concat(m[2].split(','));
+  return !m || !m.length ? nil : [m[1]].concat(m[2].split(','));
 };
 
 export const formatCssFunction = (x: string[]) => {
