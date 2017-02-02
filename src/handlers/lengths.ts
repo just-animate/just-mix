@@ -1,26 +1,26 @@
 import { numbers } from './numbers';
-import { mixer, IMixer, nil, inToPx, cmToPx, mmToPx } from '../internal';
+import { mixer, IMixer, nil, inToPx, cmToPx, mmToPx, ptToPx, pcToPx, qToPx } from '../internal';
 
 export type LengthValue = [number, string | undefined];
 
-const unitExpression = /^([\-]{0,1}[0-9]*[\.]{0,1}[0-9]*){1}(px|in|cm|mm|em|rem|pt|pc|ex|ch|vw|vh|vmin|vmax|%){0,1}$/i;
+const unitExpression = /^([\-]{0,1}[0-9]*[\.]{0,1}[0-9]*){1}(px|in|cm|mm|em|rem|pt|pc|ex|ch|vw|vh|vmin|vmax|q|%){0,1}$/i;
 
 const types = {
   px: 1,
   in: 2,
   cm: 4,
   mm: 8,
-  em: 16,
-  rem: 32,
-  pt: 64,
-  pc: 128,
-  ex: 256,
-  ch: 512,
+  pt: 16,
+  pc: 32,
+  q: 64,
+  em: 128,
+  rem: 256,
+  ex: 512,
   vw: 1024,
   vh: 2048,
   vmin: 4096,
   vmax: 8192,
-  pe: 1638
+  ch: 16384
 };
 
 const isSquare = (n: number) => n && (n & (n - 1)) === 0;
@@ -39,7 +39,10 @@ const toPixels = (length: LengthValue): LengthValue => {
   const co = unit === 'in'
     ? inToPx : unit === 'cm'
       ? cmToPx : unit === 'mm'
-        ? mmToPx : 1;
+        ? mmToPx : unit === 'pt'
+          ? ptToPx : unit === 'pc'
+            ? pcToPx : unit === 'q'
+              ? qToPx : 1;
 
   return [value * co, unit];
 };
