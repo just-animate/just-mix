@@ -3,7 +3,7 @@ import * as assert from 'assert';
 
 describe('lengths', () => {
 
-  describe('format()', () => {
+  describe('format(no-unit)', () => {
     it('formats [0, undefined] as 0', () => {
       assert.equal('-0.100px', lengths.format([-.1, undefined]));
     });
@@ -13,31 +13,42 @@ describe('lengths', () => {
     it('formats [1, undefined] as 1px', () => {
       assert.equal('1px', lengths.format([1, undefined]));
     });
+  });
+
+  describe('format(px)', () => {
     it('formats [-.1, px] as -.1px', () => {
       assert.equal('-0.100px', lengths.format([-.1, 'px']));
     });
     it('formats [1, px] as 1px', () => {
       assert.equal('1px', lengths.format([1, 'px']));
     });
+  });
+
+  describe('format(in)', () => {
     it('formats [-.1, in] as -.1in', () => {
       assert.equal('-0.100in', lengths.format([-.1, 'in']));
     });
     it('formats [1, in] as 1in', () => {
       assert.equal('1in', lengths.format([1, 'in']));
     });
+  });
+
+  describe('format(cm)', () => {
     it('formats [-.1, cm] as -.1cm', () => {
       assert.equal('-0.100cm', lengths.format([-.1, 'cm']));
     });
     it('formats [1, cm] as 1cm', () => {
       assert.equal('1cm', lengths.format([1, 'cm']));
     });
-
   });
 
-  describe('parse()', () => {
+  describe('parse(0)', () => {
     it('parses 0 as [0, undefined]', () => {
       assert.deepEqual([0, undefined], lengths.parse('0'));
     });
+  });
+
+  describe('parse(px)', () => {
     it('parses 1px as [1, px]', () => {
       assert.deepEqual([1, 'px'], lengths.parse('1px'));
     });
@@ -47,10 +58,9 @@ describe('lengths', () => {
     it('parses 1px as [1, px]', () => {
       assert.deepEqual([1, 'px'], lengths.parse('1px'));
     });
+  });
 
-    it('parses 0 as [0, undefined]', () => {
-      assert.deepEqual([0, undefined], lengths.parse('0'));
-    });
+  describe('parse(in)', () => {
     it('parses 1in as [1, in]', () => {
       assert.deepEqual([1, 'in'], lengths.parse('1in'));
     });
@@ -60,10 +70,9 @@ describe('lengths', () => {
     it('parses 1in as [1, in]', () => {
       assert.deepEqual([1, 'in'], lengths.parse('1in'));
     });
+  });
 
-    it('parses 0 as [0, undefined]', () => {
-      assert.deepEqual([0, undefined], lengths.parse('0'));
-    });
+  describe('parse(cm)', () => {
     it('parses 1cm as [1, cm]', () => {
       assert.deepEqual([1, 'cm'], lengths.parse('1cm'));
     });
@@ -75,7 +84,7 @@ describe('lengths', () => {
     });
   });
 
-  describe('interpolate()', () => {
+  describe('interpolate(px)', () => {
     it('interpolate 0, 1px, 0 = 0', () => {
       assert.deepEqual([0, 'px'], lengths.interpolate([0, undefined], [1, 'px'], 0));
     });
@@ -88,7 +97,9 @@ describe('lengths', () => {
     it('interpolate 0, 1px, 1 = 1px', () => {
       assert.deepEqual([1, 'px'], lengths.interpolate([0, undefined], [1, 'px'], 1));
     });
+  });
 
+  describe('interpolate(in)', () => {
     it('interpolate 0, 1in, 0 = 0', () => {
       assert.deepEqual([0, 'in'], lengths.interpolate([0, undefined], [1, 'in'], 0));
     });
@@ -101,7 +112,9 @@ describe('lengths', () => {
     it('interpolate 0, 1in, 1 = 1in', () => {
       assert.deepEqual([1, 'in'], lengths.interpolate([0, undefined], [1, 'in'], 1));
     });
+  });
 
+  describe('interpolate(cm)', () => {
     it('interpolate 0, 1cm, 0 = 0', () => {
       assert.deepEqual([0, 'cm'], lengths.interpolate([0, undefined], [1, 'cm'], 0));
     });
@@ -116,7 +129,7 @@ describe('lengths', () => {
     });
   });
 
-  describe('lengths()', () => {
+  describe('lengths(px)', () => {
     it('0, 1px, 0 = 0', () => {
       assert.equal('0', lengths('0', '1px', 0));
     });
@@ -129,7 +142,9 @@ describe('lengths', () => {
     it('0, 1px, 1 = 1px', () => {
       assert.equal('1px', lengths('0', '1px', 1));
     });
+  });
 
+  describe('lengths(in)', () => {
     it('0, 1in, 0 = 0', () => {
       assert.equal('0', lengths('0', '1in', 0));
     });
@@ -142,7 +157,9 @@ describe('lengths', () => {
     it('0, 1in, 1 = 1in', () => {
       assert.equal('1in', lengths('0', '1in', 1));
     });
+  });
 
+  describe('lengths(cm)', () => {
     it('0, 1cm, 0 = 0', () => {
       assert.equal('0', lengths('0', '1cm', 0));
     });
