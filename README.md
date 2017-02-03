@@ -151,3 +151,7 @@ var optimized = lengths.optimize(keyframes);
 var currentObj = lengths.interpolate(optimized[0], optimized[1]);
 var currentVal = lengths.format(currentObj);
 ```
+
+## What's next?
+
+Next up is adding support for angles.   Stay tuned!
