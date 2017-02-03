@@ -1,8 +1,10 @@
 /* alias of undefined for minification purposes */
 export const nil = undefined;
-export const inToPx = 96;
-export const cmToPx = 37.8;
+
+// length ratios comparted to a pixel
 export const mmToPx = 3.78;
-export const ptToPx = 1;
-export const pcToPx = 1;
-export const qToPx = 1;
+export const cmToPx = mmToPx * 10;
+export const inToPx = cmToPx / 2.54;
+export const ptToPx = inToPx / 72;
+export const pcToPx = ptToPx * 12;
+export const qToPx = mmToPx / 4;
