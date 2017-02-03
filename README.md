@@ -1,35 +1,51 @@
-# Just Mix
+# JustMix
 
 *Mix and interpolate colors, css units, and more!*
 
 [![npm version](https://badge.fury.io/js/just-mix.svg)](https://badge.fury.io/js/just-mix)
 [![Build Status](https://travis-ci.org/just-animate/just-mix.svg?branch=master)](https://travis-ci.org/just-animate/just-mix)
-<!-- [![Downloads](https://img.shields.io/npm/dm/just-mix.svg)](https://www.npmjs.com/package/just-mix) -->
+[![Downloads](https://img.shields.io/npm/dm/just-mix.svg)](https://www.npmjs.com/package/just-mix)
 
-## Why use Just Mix?
+## Why use JustMix?
 
 - Simple CSS value parsing and interpolation
-- Handles colors, lengths, percentages, etc.
+- Interpolates colors, lengths, percentages, etc.
+- Animate from the ground up with a performant advanced API
 - Small download size with no dependencies
 
 > Power this project up with 🌟s,  [^ star it please](https://github.com/just-animate/just-mix/stargazers).
 
 ## Setup
 
-### Setup using a CDN
+### Setup for use in the browser
 Include this script
 ```html
 <script src="https://unpkg.com/just-mix/dist/just-mix.min.js"></script>
 ```
 
-### Setup for bundling (or if you need typings for TypeScript)
+### Setup for bundling (or if you want typings for TypeScript)
 
 ```bash
 npm install just-mix --save
 ```
 
+## Getting Started
+
+Each css type has a simple function that takes in two values to interpolate between and a third (weight/offset) to find a point in the middle.  The third number should be a number between 0 and 1 represetning 0 to 100% of the distance between the two values.  For example:
+
+```ts
+var fivePixels = just.mix.lengths('0px', '10px', 0.5);
+```
+
+In this example, 5px is 1/2 way between 0px and 10px.  The advantage of this is that it is easy to read.
+
+If you need to reuse the same values over and over again, check out the Advanced functions below
+
+
 
 ## API
+
+Using JustMix is easy to use. Each css type has a simple function that takes three parameters.
 
 ### colors (left, right, weight) => color3
 Finds a color between two colors.  Weight is a ratio between 0 and 1 to use for mixing the colors
@@ -101,4 +117,38 @@ const fivePercent = just.mix.percents('0%', '10%', .5);
 import { percents } from 'just-mix';
 
 const fivePercent = percents('0%', '10%', .5);
+```
+
+
+
+## Advanced functions
+Each css type has 4 additional functions that make up its simple function.  The simple function chains these together for convenience but is not the best choice when actually animating something.  The four functions are as follows: ```parse()```,  ```format()```,  ```optimize()```, and  ```interpolate()```
+
+### ```parse(val) => obj```
+
+The parse function takes in each value and reduces it to an internal representation.  This is most often an array. In the case of ```lengths```, it is a two part array: [number, unitString].
+
+### ```format(obj) => val```
+
+The format function takes the internal representation and "formats" it back.  This normally returns a string.
+
+### ```optimize(obj[]) => obj[]```
+
+The optimize function takes a series of objects (the internal representations of the values) and makes edits so that they are in the most efficent format possible relative to each other.  For performance reasons, the original array is mutated.
+
+### ```interpolate(obj, obj, weight) => obj```
+
+The interpolate function mixes the two internal representations together relative to the weight provided and returns the result.
+
+### An example of using the advanced functions in tandem
+
+The advanced functions are most useful when dealing with a lot of values or the same values over and over again.  These are intended for building animations from the ground up.
+
+```ts
+var lengths = just.mix.lengths;
+var keyframes = ['10px', '5cm'].map(lengths.parse);
+var optimizedKeyframes = lengths.optimize(keyframes);
+
+var currentObj = lengths.interpolate(keyframes[0], keyframes[1]);
+var currentVal = lengths.format(currentObj);
 ```
