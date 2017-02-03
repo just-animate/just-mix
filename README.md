@@ -139,19 +139,6 @@ The optimize function takes a series of objects (the internal representations of
 
 The interpolate function mixes the two internal representations together relative to the weight provided and returns the result.
 
-### An example of using the advanced functions in tandem
-
-The advanced functions are most useful when dealing with a lot of values or the same values over and over again.  These are intended for building animations from the ground up.
-
-```ts
-var lengths = just.mix.lengths;
-var keyframes = ['10px', '5cm'].map(lengths.parse);
-var optimized = lengths.optimize(keyframes);
-
-var currentObj = lengths.interpolate(optimized[0], optimized[1]);
-var currentVal = lengths.format(currentObj);
-```
-
 ## What's next?
 
 Next up is adding support for angles.   Stay tuned!
