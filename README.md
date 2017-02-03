@@ -31,7 +31,7 @@ npm install just-mix --save
 
 ## Getting Started
 
-Each CSS type in JustMix takes multiple values and returns a function that can be called to get the value at each offset. The offset is a number between 0 and 1 representing 0% to 100%.
+Each CSS type in JustMix accepts two or more values and returns a function that can be called to get the value at each offset. The offset is a number between 0 and 1 representing 0% to 100%.
 
 ```ts
 var tween = just.mix.lengths('0px', '10px');
@@ -40,7 +40,8 @@ var twoPixels = tween(.2);
 var tenPixels = tween(1);
 ```
 
-In this example, 1px is .1 or 10% of the way between 0px and 10px.
+In this example, 1px is .1 or 10% of the way between 0px and 10px.  
+
 
 ## API
 
