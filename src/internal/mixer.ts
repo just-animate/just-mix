@@ -1,5 +1,5 @@
 export interface IMixer<TFormat, TValue> {
-  (left: TFormat, right: TFormat): (weight: number) => TFormat;
+  (...values: TFormat[]): (weight: number) => TFormat;
   format(val: TValue): TFormat;
   interpolate(left: TValue, right: TValue, weight: number): TValue;
   parse(val: TFormat): TValue;
@@ -16,9 +16,17 @@ export const mixer = <TFormat, TValue>({parse, format, interpolate, optimize}: {
 }) => {
   const optimizeFn = optimize || returnValue;
 
-  const fn = ((left: TFormat, right: TFormat) => {
-    const values = optimizeFn([parse(left), parse(right)]);
-    return (weight: number) => format(interpolate(values[0], values[1], weight));
+  const fn = (function (): (weight: number) => TFormat {
+    const args = arguments;
+    const values = optimizeFn(Array.prototype.map.call(args, parse));
+    const lastIndex = values.length - 1;
+    return (weight: number) => {
+      const pos = lastIndex * weight;
+      const left = Math.floor(pos);
+      const right = Math.ceil(pos);
+      const offset = pos - left;
+      return format(interpolate(values[left], values[right], offset));
+    };
   }) as IMixer<TFormat, TValue>;
 
   fn.parse = parse;

@@ -752,4 +752,24 @@ describe('lengths', () => {
       assert.equal('1q', lengths('0', '1q')(1));
     });
   });
+
+  describe('lengths(multiple)', () => {
+    it('tweens between multiple mm lengths', () => {
+      const tween = lengths('0', '5mm', '100mm');
+      assert.equal('0', tween(0));
+      assert.equal('2.500mm', tween(.25));
+      assert.equal('5mm', tween(.5));
+      assert.equal('52.500mm', tween(.75));
+      assert.equal('100mm', tween(1));
+    });
+
+    it('tweens between multiple absolute lengths', () => {
+      const tween = lengths('0', '5mm', '10cm');
+      assert.equal('0', tween(0));
+      assert.equal('9.450px', tween(.25));
+      assert.equal('18.900px', tween(.5));
+      assert.equal('198.450px', tween(.75));
+      assert.equal('378px', tween(1));
+    });
+  });
 });

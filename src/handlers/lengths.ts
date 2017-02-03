@@ -4,6 +4,7 @@ import { mixer, IMixer, nil, inToPx, cmToPx, mmToPx, ptToPx, pcToPx, qToPx } fro
 export type LengthValue = [number, string | undefined];
 
 const unitExpression = /^([\-]{0,1}[0-9]*[\.]{0,1}[0-9]*){1}(px|in|cm|mm|em|rem|pt|pc|ex|ch|vw|vh|vmin|vmax|q|%){0,1}$/i;
+const px = 'px';
 
 const types = {
   px: 1,
@@ -44,7 +45,7 @@ const toPixels = (length: LengthValue): LengthValue => {
             ? pcToPx : unit === 'q'
               ? qToPx : 1;
 
-  return [value * co, unit];
+  return [value * co, px];
 };
 
 export const lengths: IMixer<string, LengthValue> = mixer({
@@ -56,7 +57,7 @@ export const lengths: IMixer<string, LengthValue> = mixer({
   },
   format(value: LengthValue): string {
     const n = value[0];
-    return n === 0 ? '0' : numbers.format(n) + (value[1] || 'px');
+    return n === 0 ? '0' : numbers.format(n) + (value[1] || px);
   },
   interpolate(left: LengthValue, right: LengthValue, weight: number): LengthValue {
     return [numbers.interpolate(left[0], right[0], weight), left[1] || right[1] || nil];
