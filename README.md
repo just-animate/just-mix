@@ -147,8 +147,8 @@ The advanced functions are most useful when dealing with a lot of values or the 
 ```ts
 var lengths = just.mix.lengths;
 var keyframes = ['10px', '5cm'].map(lengths.parse);
-var optimizedKeyframes = lengths.optimize(keyframes);
+var optimized = lengths.optimize(keyframes);
 
-var currentObj = lengths.interpolate(keyframes[0], keyframes[1]);
+var currentObj = lengths.interpolate(optimized[0], optimized[1]);
 var currentVal = lengths.format(currentObj);
 ```
