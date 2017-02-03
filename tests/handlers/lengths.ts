@@ -42,6 +42,103 @@ describe('lengths', () => {
     });
   });
 
+  describe('format(mm)', () => {
+    it('formats [-.1, mm] as -.1mm', () => {
+      assert.equal('-0.100mm', lengths.format([-.1, 'mm']));
+    });
+    it('formats [1, mm] as 1mm', () => {
+      assert.equal('1mm', lengths.format([1, 'mm']));
+    });
+  });
+  describe('format(pt)', () => {
+    it('formats [-.1, pt] as -.1pt', () => {
+      assert.equal('-0.100pt', lengths.format([-.1, 'pt']));
+    });
+    it('formats [1, pt] as 1pt', () => {
+      assert.equal('1pt', lengths.format([1, 'pt']));
+    });
+  });
+  describe('format(pc)', () => {
+    it('formats [-.1, pc] as -.1pc', () => {
+      assert.equal('-0.100pc', lengths.format([-.1, 'pc']));
+    });
+    it('formats [1, pc] as 1pc', () => {
+      assert.equal('1pc', lengths.format([1, 'pc']));
+    });
+  });
+  describe('format(q)', () => {
+    it('formats [-.1, q] as -.1q', () => {
+      assert.equal('-0.100q', lengths.format([-.1, 'q']));
+    });
+    it('formats [1, q] as 1q', () => {
+      assert.equal('1q', lengths.format([1, 'q']));
+    });
+  });
+  describe('format(em)', () => {
+    it('formats [-.1, em] as -.1em', () => {
+      assert.equal('-0.100em', lengths.format([-.1, 'em']));
+    });
+    it('formats [1, em] as 1em', () => {
+      assert.equal('1em', lengths.format([1, 'em']));
+    });
+  });
+  describe('format(rem)', () => {
+    it('formats [-.1, rem] as -.1rem', () => {
+      assert.equal('-0.100rem', lengths.format([-.1, 'rem']));
+    });
+    it('formats [1, rem] as 1rem', () => {
+      assert.equal('1rem', lengths.format([1, 'rem']));
+    });
+  });
+  describe('format(ex)', () => {
+    it('formats [-.1, ex] as -.1ex', () => {
+      assert.equal('-0.100ex', lengths.format([-.1, 'ex']));
+    });
+    it('formats [1, ex] as 1ex', () => {
+      assert.equal('1ex', lengths.format([1, 'ex']));
+    });
+  });
+  describe('format(vw)', () => {
+    it('formats [-.1, vw] as -.1vw', () => {
+      assert.equal('-0.100vw', lengths.format([-.1, 'vw']));
+    });
+    it('formats [1, vw] as 1vw', () => {
+      assert.equal('1vw', lengths.format([1, 'vw']));
+    });
+  });
+  describe('format(vh)', () => {
+    it('formats [-.1, vh] as -.1vh', () => {
+      assert.equal('-0.100vh', lengths.format([-.1, 'vh']));
+    });
+    it('formats [1, vh] as 1vh', () => {
+      assert.equal('1vh', lengths.format([1, 'vh']));
+    });
+  });
+  describe('format(vmin)', () => {
+    it('formats [-.1, vmin] as -.1vmin', () => {
+      assert.equal('-0.100vmin', lengths.format([-.1, 'vmin']));
+    });
+    it('formats [1, vmin] as 1vmin', () => {
+      assert.equal('1vmin', lengths.format([1, 'vmin']));
+    });
+  });
+  describe('format(vmax)', () => {
+    it('formats [-.1, vmax] as -.1vmax', () => {
+      assert.equal('-0.100vmax', lengths.format([-.1, 'vmax']));
+    });
+    it('formats [1, vmax] as 1vmax', () => {
+      assert.equal('1vmax', lengths.format([1, 'vmax']));
+    });
+  });
+  describe('format(ch)', () => {
+    it('formats [-.1, ch] as -.1ch', () => {
+      assert.equal('-0.100ch', lengths.format([-.1, 'ch']));
+    });
+    it('formats [1, ch] as 1ch', () => {
+      assert.equal('1ch', lengths.format([1, 'ch']));
+    });
+  });
+
   describe('parse(0)', () => {
     it('parses 0 as [0, undefined]', () => {
       assert.deepEqual([0, undefined], lengths.parse('0'));
@@ -81,6 +178,139 @@ describe('lengths', () => {
     });
     it('parses 1cm as [1, cm]', () => {
       assert.deepEqual([1, 'cm'], lengths.parse('1cm'));
+    });
+  });
+
+  describe('parse(mm)', () => {
+    it('parses 1mm as [1, mm]', () => {
+      assert.deepEqual([1, 'mm'], lengths.parse('1mm'));
+    });
+    it('parses -.1mm as [-.1, mm]', () => {
+      assert.deepEqual([-.1, 'mm'], lengths.parse('-.1mm'));
+    });
+    it('parses 1mm as [1, mm]', () => {
+      assert.deepEqual([1, 'mm'], lengths.parse('1mm'));
+    });
+  });
+  describe('parse(pt)', () => {
+    it('parses 1pt as [1, pt]', () => {
+      assert.deepEqual([1, 'pt'], lengths.parse('1pt'));
+    });
+    it('parses -.1pt as [-.1, pt]', () => {
+      assert.deepEqual([-.1, 'pt'], lengths.parse('-.1pt'));
+    });
+    it('parses 1pt as [1, pt]', () => {
+      assert.deepEqual([1, 'pt'], lengths.parse('1pt'));
+    });
+  });
+  describe('parse(pc)', () => {
+    it('parses 1pc as [1, pc]', () => {
+      assert.deepEqual([1, 'pc'], lengths.parse('1pc'));
+    });
+    it('parses -.1pc as [-.1, pc]', () => {
+      assert.deepEqual([-.1, 'pc'], lengths.parse('-.1pc'));
+    });
+    it('parses 1pc as [1, pc]', () => {
+      assert.deepEqual([1, 'pc'], lengths.parse('1pc'));
+    });
+  });
+  describe('parse(q)', () => {
+    it('parses 1q as [1, q]', () => {
+      assert.deepEqual([1, 'q'], lengths.parse('1q'));
+    });
+    it('parses -.1q as [-.1, q]', () => {
+      assert.deepEqual([-.1, 'q'], lengths.parse('-.1q'));
+    });
+    it('parses 1q as [1, q]', () => {
+      assert.deepEqual([1, 'q'], lengths.parse('1q'));
+    });
+  });
+  describe('parse(em)', () => {
+    it('parses 1em as [1, em]', () => {
+      assert.deepEqual([1, 'em'], lengths.parse('1em'));
+    });
+    it('parses -.1em as [-.1, em]', () => {
+      assert.deepEqual([-.1, 'em'], lengths.parse('-.1em'));
+    });
+    it('parses 1em as [1, em]', () => {
+      assert.deepEqual([1, 'em'], lengths.parse('1em'));
+    });
+  });
+  describe('parse(rem)', () => {
+    it('parses 1rem as [1, rem]', () => {
+      assert.deepEqual([1, 'rem'], lengths.parse('1rem'));
+    });
+    it('parses -.1rem as [-.1, rem]', () => {
+      assert.deepEqual([-.1, 'rem'], lengths.parse('-.1rem'));
+    });
+    it('parses 1rem as [1, rem]', () => {
+      assert.deepEqual([1, 'rem'], lengths.parse('1rem'));
+    });
+  });
+  describe('parse(ex)', () => {
+    it('parses 1ex as [1, ex]', () => {
+      assert.deepEqual([1, 'ex'], lengths.parse('1ex'));
+    });
+    it('parses -.1ex as [-.1, ex]', () => {
+      assert.deepEqual([-.1, 'ex'], lengths.parse('-.1ex'));
+    });
+    it('parses 1ex as [1, ex]', () => {
+      assert.deepEqual([1, 'ex'], lengths.parse('1ex'));
+    });
+  });
+  describe('parse(vw)', () => {
+    it('parses 1vw as [1, vw]', () => {
+      assert.deepEqual([1, 'vw'], lengths.parse('1vw'));
+    });
+    it('parses -.1vw as [-.1, vw]', () => {
+      assert.deepEqual([-.1, 'vw'], lengths.parse('-.1vw'));
+    });
+    it('parses 1vw as [1, vw]', () => {
+      assert.deepEqual([1, 'vw'], lengths.parse('1vw'));
+    });
+  });
+  describe('parse(vh)', () => {
+    it('parses 1vh as [1, vh]', () => {
+      assert.deepEqual([1, 'vh'], lengths.parse('1vh'));
+    });
+    it('parses -.1vh as [-.1, vh]', () => {
+      assert.deepEqual([-.1, 'vh'], lengths.parse('-.1vh'));
+    });
+    it('parses 1vh as [1, vh]', () => {
+      assert.deepEqual([1, 'vh'], lengths.parse('1vh'));
+    });
+  });
+  describe('parse(vmin)', () => {
+    it('parses 1vmin as [1, vmin]', () => {
+      assert.deepEqual([1, 'vmin'], lengths.parse('1vmin'));
+    });
+    it('parses -.1vmin as [-.1, vmin]', () => {
+      assert.deepEqual([-.1, 'vmin'], lengths.parse('-.1vmin'));
+    });
+    it('parses 1vmin as [1, vmin]', () => {
+      assert.deepEqual([1, 'vmin'], lengths.parse('1vmin'));
+    });
+  });
+  describe('parse(vmax)', () => {
+    it('parses 1vmax as [1, vmax]', () => {
+      assert.deepEqual([1, 'vmax'], lengths.parse('1vmax'));
+    });
+    it('parses -.1vmax as [-.1, vmax]', () => {
+      assert.deepEqual([-.1, 'vmax'], lengths.parse('-.1vmax'));
+    });
+    it('parses 1vmax as [1, vmax]', () => {
+      assert.deepEqual([1, 'vmax'], lengths.parse('1vmax'));
+    });
+  });
+  describe('parse(ch)', () => {
+    it('parses 1ch as [1, ch]', () => {
+      assert.deepEqual([1, 'ch'], lengths.parse('1ch'));
+    });
+    it('parses -.1ch as [-.1, ch]', () => {
+      assert.deepEqual([-.1, 'ch'], lengths.parse('-.1ch'));
+    });
+    it('parses 1ch as [1, ch]', () => {
+      assert.deepEqual([1, 'ch'], lengths.parse('1ch'));
     });
   });
 
@@ -126,6 +356,175 @@ describe('lengths', () => {
     });
     it('interpolate 0, 1cm, 1 = 1cm', () => {
       assert.deepEqual([1, 'cm'], lengths.interpolate([0, undefined], [1, 'cm'], 1));
+    });
+  });
+
+  describe('interpolate(mm)', () => {
+    it('interpolate 0, 1mm, 0 = 0', () => {
+      assert.deepEqual([0, 'mm'], lengths.interpolate([0, undefined], [1, 'mm'], 0));
+    });
+    it('interpolate 0, 1mm, .5 = .5mm', () => {
+      assert.deepEqual([.5, 'mm'], lengths.interpolate([0, undefined], [1, 'mm'], .5));
+    });
+    it('interpolate .5mm, 1mm, .5 = .75mm', () => {
+      assert.deepEqual([.75, 'mm'], lengths.interpolate([.5, 'mm'], [1, 'mm'], .5));
+    });
+    it('interpolate 0, 1mm, 1 = 1mm', () => {
+      assert.deepEqual([1, 'mm'], lengths.interpolate([0, undefined], [1, 'mm'], 1));
+    });
+  });
+  describe('interpolate(pt)', () => {
+    it('interpolate 0, 1pt, 0 = 0', () => {
+      assert.deepEqual([0, 'pt'], lengths.interpolate([0, undefined], [1, 'pt'], 0));
+    });
+    it('interpolate 0, 1pt, .5 = .5pt', () => {
+      assert.deepEqual([.5, 'pt'], lengths.interpolate([0, undefined], [1, 'pt'], .5));
+    });
+    it('interpolate .5pt, 1pt, .5 = .75pt', () => {
+      assert.deepEqual([.75, 'pt'], lengths.interpolate([.5, 'pt'], [1, 'pt'], .5));
+    });
+    it('interpolate 0, 1pt, 1 = 1pt', () => {
+      assert.deepEqual([1, 'pt'], lengths.interpolate([0, undefined], [1, 'pt'], 1));
+    });
+  });
+  describe('interpolate(pc)', () => {
+    it('interpolate 0, 1pc, 0 = 0', () => {
+      assert.deepEqual([0, 'pc'], lengths.interpolate([0, undefined], [1, 'pc'], 0));
+    });
+    it('interpolate 0, 1pc, .5 = .5pc', () => {
+      assert.deepEqual([.5, 'pc'], lengths.interpolate([0, undefined], [1, 'pc'], .5));
+    });
+    it('interpolate .5pc, 1pc, .5 = .75pc', () => {
+      assert.deepEqual([.75, 'pc'], lengths.interpolate([.5, 'pc'], [1, 'pc'], .5));
+    });
+    it('interpolate 0, 1pc, 1 = 1pc', () => {
+      assert.deepEqual([1, 'pc'], lengths.interpolate([0, undefined], [1, 'pc'], 1));
+    });
+  });
+  describe('interpolate(q)', () => {
+    it('interpolate 0, 1q, 0 = 0', () => {
+      assert.deepEqual([0, 'q'], lengths.interpolate([0, undefined], [1, 'q'], 0));
+    });
+    it('interpolate 0, 1q, .5 = .5q', () => {
+      assert.deepEqual([.5, 'q'], lengths.interpolate([0, undefined], [1, 'q'], .5));
+    });
+    it('interpolate .5q, 1q, .5 = .75q', () => {
+      assert.deepEqual([.75, 'q'], lengths.interpolate([.5, 'q'], [1, 'q'], .5));
+    });
+    it('interpolate 0, 1q, 1 = 1q', () => {
+      assert.deepEqual([1, 'q'], lengths.interpolate([0, undefined], [1, 'q'], 1));
+    });
+  });
+  describe('interpolate(em)', () => {
+    it('interpolate 0, 1em, 0 = 0', () => {
+      assert.deepEqual([0, 'em'], lengths.interpolate([0, undefined], [1, 'em'], 0));
+    });
+    it('interpolate 0, 1em, .5 = .5em', () => {
+      assert.deepEqual([.5, 'em'], lengths.interpolate([0, undefined], [1, 'em'], .5));
+    });
+    it('interpolate .5em, 1em, .5 = .75em', () => {
+      assert.deepEqual([.75, 'em'], lengths.interpolate([.5, 'em'], [1, 'em'], .5));
+    });
+    it('interpolate 0, 1em, 1 = 1em', () => {
+      assert.deepEqual([1, 'em'], lengths.interpolate([0, undefined], [1, 'em'], 1));
+    });
+  });
+  describe('interpolate(rem)', () => {
+    it('interpolate 0, 1rem, 0 = 0', () => {
+      assert.deepEqual([0, 'rem'], lengths.interpolate([0, undefined], [1, 'rem'], 0));
+    });
+    it('interpolate 0, 1rem, .5 = .5rem', () => {
+      assert.deepEqual([.5, 'rem'], lengths.interpolate([0, undefined], [1, 'rem'], .5));
+    });
+    it('interpolate .5rem, 1rem, .5 = .75rem', () => {
+      assert.deepEqual([.75, 'rem'], lengths.interpolate([.5, 'rem'], [1, 'rem'], .5));
+    });
+    it('interpolate 0, 1rem, 1 = 1rem', () => {
+      assert.deepEqual([1, 'rem'], lengths.interpolate([0, undefined], [1, 'rem'], 1));
+    });
+  });
+  describe('interpolate(ex)', () => {
+    it('interpolate 0, 1ex, 0 = 0', () => {
+      assert.deepEqual([0, 'ex'], lengths.interpolate([0, undefined], [1, 'ex'], 0));
+    });
+    it('interpolate 0, 1ex, .5 = .5ex', () => {
+      assert.deepEqual([.5, 'ex'], lengths.interpolate([0, undefined], [1, 'ex'], .5));
+    });
+    it('interpolate .5ex, 1ex, .5 = .75ex', () => {
+      assert.deepEqual([.75, 'ex'], lengths.interpolate([.5, 'ex'], [1, 'ex'], .5));
+    });
+    it('interpolate 0, 1ex, 1 = 1ex', () => {
+      assert.deepEqual([1, 'ex'], lengths.interpolate([0, undefined], [1, 'ex'], 1));
+    });
+  });
+  describe('interpolate(vw)', () => {
+    it('interpolate 0, 1vw, 0 = 0', () => {
+      assert.deepEqual([0, 'vw'], lengths.interpolate([0, undefined], [1, 'vw'], 0));
+    });
+    it('interpolate 0, 1vw, .5 = .5vw', () => {
+      assert.deepEqual([.5, 'vw'], lengths.interpolate([0, undefined], [1, 'vw'], .5));
+    });
+    it('interpolate .5vw, 1vw, .5 = .75vw', () => {
+      assert.deepEqual([.75, 'vw'], lengths.interpolate([.5, 'vw'], [1, 'vw'], .5));
+    });
+    it('interpolate 0, 1vw, 1 = 1vw', () => {
+      assert.deepEqual([1, 'vw'], lengths.interpolate([0, undefined], [1, 'vw'], 1));
+    });
+  });
+  describe('interpolate(vh)', () => {
+    it('interpolate 0, 1vh, 0 = 0', () => {
+      assert.deepEqual([0, 'vh'], lengths.interpolate([0, undefined], [1, 'vh'], 0));
+    });
+    it('interpolate 0, 1vh, .5 = .5vh', () => {
+      assert.deepEqual([.5, 'vh'], lengths.interpolate([0, undefined], [1, 'vh'], .5));
+    });
+    it('interpolate .5vh, 1vh, .5 = .75vh', () => {
+      assert.deepEqual([.75, 'vh'], lengths.interpolate([.5, 'vh'], [1, 'vh'], .5));
+    });
+    it('interpolate 0, 1vh, 1 = 1vh', () => {
+      assert.deepEqual([1, 'vh'], lengths.interpolate([0, undefined], [1, 'vh'], 1));
+    });
+  });
+  describe('interpolate(vmin)', () => {
+    it('interpolate 0, 1vmin, 0 = 0', () => {
+      assert.deepEqual([0, 'vmin'], lengths.interpolate([0, undefined], [1, 'vmin'], 0));
+    });
+    it('interpolate 0, 1vmin, .5 = .5vmin', () => {
+      assert.deepEqual([.5, 'vmin'], lengths.interpolate([0, undefined], [1, 'vmin'], .5));
+    });
+    it('interpolate .5vmin, 1vmin, .5 = .75vmin', () => {
+      assert.deepEqual([.75, 'vmin'], lengths.interpolate([.5, 'vmin'], [1, 'vmin'], .5));
+    });
+    it('interpolate 0, 1vmin, 1 = 1vmin', () => {
+      assert.deepEqual([1, 'vmin'], lengths.interpolate([0, undefined], [1, 'vmin'], 1));
+    });
+  });
+  describe('interpolate(vmax)', () => {
+    it('interpolate 0, 1vmax, 0 = 0', () => {
+      assert.deepEqual([0, 'vmax'], lengths.interpolate([0, undefined], [1, 'vmax'], 0));
+    });
+    it('interpolate 0, 1vmax, .5 = .5vmax', () => {
+      assert.deepEqual([.5, 'vmax'], lengths.interpolate([0, undefined], [1, 'vmax'], .5));
+    });
+    it('interpolate .5vmax, 1vmax, .5 = .75vmax', () => {
+      assert.deepEqual([.75, 'vmax'], lengths.interpolate([.5, 'vmax'], [1, 'vmax'], .5));
+    });
+    it('interpolate 0, 1vmax, 1 = 1vmax', () => {
+      assert.deepEqual([1, 'vmax'], lengths.interpolate([0, undefined], [1, 'vmax'], 1));
+    });
+  });
+  describe('interpolate(ch)', () => {
+    it('interpolate 0, 1ch, 0 = 0', () => {
+      assert.deepEqual([0, 'ch'], lengths.interpolate([0, undefined], [1, 'ch'], 0));
+    });
+    it('interpolate 0, 1ch, .5 = .5ch', () => {
+      assert.deepEqual([.5, 'ch'], lengths.interpolate([0, undefined], [1, 'ch'], .5));
+    });
+    it('interpolate .5ch, 1ch, .5 = .75ch', () => {
+      assert.deepEqual([.75, 'ch'], lengths.interpolate([.5, 'ch'], [1, 'ch'], .5));
+    });
+    it('interpolate 0, 1ch, 1 = 1ch', () => {
+      assert.deepEqual([1, 'ch'], lengths.interpolate([0, undefined], [1, 'ch'], 1));
     });
   });
 
