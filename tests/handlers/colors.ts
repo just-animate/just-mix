@@ -59,10 +59,10 @@ describe('color', () => {
 
   describe('colors()', () => {
     it('At 50%, blue and hsl(0, 100%, 50%) output rgba(128,0,128,1)', () => {
-      assert.equal('rgba(128,0,128,1)', colors('blue', 'hsl(0, 100%, 50%)', .5));
+      assert.equal('rgba(128,0,128,1)', colors('blue', 'hsl(0, 100%, 50%)')(.5));
     });
     it('At 25%, rgba(255, 0, 0, 1) and hsl(0, 100%, 50%, 0) output rgba(255,0,0,0.5)', () => {
-      assert.equal('rgba(255,0,0,0.250)', colors('hsl(0, 100%, 50%, 0)', 'rgba(255, 0, 0, 1)', .25));
+      assert.equal('rgba(255,0,0,0.250)', colors('hsl(0, 100%, 50%, 0)', 'rgba(255, 0, 0, 1)')(.25));
     });
   });
 });
