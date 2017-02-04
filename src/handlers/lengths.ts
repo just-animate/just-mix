@@ -1,5 +1,5 @@
 import { numbers } from './numbers';
-import { mixer, IMixer, nil, inToPx, cmToPx, mmToPx, ptToPx, pcToPx, qToPx } from '../internal';
+import { mixer, IMixer, nil, inToPx, cmToPx, mmToPx, ptToPx, pcToPx, qToPx, isSquare } from '../internal';
 
 export type LengthValue = [number, string | undefined];
 
@@ -23,8 +23,6 @@ const types = {
   vmax: 8192,
   ch: 16384
 };
-
-const isSquare = (n: number) => n && (n & (n - 1)) === 0;
 
 const getTypes = (values: LengthValue[]) => {
   let result = 0;

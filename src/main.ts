@@ -1,5 +1,6 @@
 
 export {
+  angles,
   lengths,
   numbers,
   percents,

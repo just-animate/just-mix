@@ -1,3 +1,4 @@
+export * from './angles';
 export * from './cssFunctions';
 export * from './colors';
 export * from './lengths';
