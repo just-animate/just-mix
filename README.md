@@ -47,7 +47,9 @@ In this example, 1px is .1 or 10% of the way between 0px and 10px.
 Using JustMix is easy to use. Each css type has a simple function that two or more parameters.  This returns a function that accepts a number between 0 and 1.
 
 ### angles ()
-Finds a color between two angles.  Weight is a ratio between 0 and 1 to use for mixing the angles
+Finds a color between two angles
+
+[Demo on CodePen](http://codepen.io/notoriousb1t/pen/zNjXbP/?editors=0110)
 
 **Browser**
 ```ts
@@ -68,7 +70,7 @@ const zero = angles('300grad', '.25turn')(.5);
 ```
 
 ### colors ()
-Finds a color between two colors.  Weight is a ratio between 0 and 1 to use for mixing the colors
+Finds a color between two colors
 
 [Demo on CodePen](http://codepen.io/notoriousb1t/pen/vgjXaP/?editors=0010)
 
@@ -91,7 +93,7 @@ const purple4 = colors('hsla(0, 100%, 50%, 1)', 'blue')(.5);
 ```
 
 ### lengths ()
-Finds a length between two lengths.  Weight is a ratio between 0 and 1 to use for mixing the lengths
+Finds a length between two lengths
 
 **Browser**
 ```ts
@@ -110,7 +112,7 @@ const fiveRems = lengths('0rem', '10rem')(.5);
 ```
 
 ### numbers ()
-Finds a number between two numbers.  Weight is a ratio between 0 and 1 to use for mixing the numbers
+Finds a number between two numbers
 
 **Browser**
 ```ts
@@ -127,7 +129,7 @@ const fiveB = numbers(0, 10)(.5);
 ```
 
 ### percents ()
-Finds a percentage between two percentages.  Weight is a ratio between 0 and 1 to use for mixing the percentages
+Finds a percentage between two percentages
 
 **Browser**
 ```ts
