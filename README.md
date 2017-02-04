@@ -40,15 +40,37 @@ var twoPixels = tween(.2);
 var tenPixels = tween(1);
 ```
 
-In this example, 1px is .1 or 10% of the way between 0px and 10px.  
-
+In this example, 1px is .1 or 10% of the way between 0px and 10px.
 
 ## API
 
-Using JustMix is easy to use. Each css type has a simple function that takes three parameters.
+Using JustMix is easy to use. Each css type has a simple function that two or more parameters.  This returns a function that accepts a number between 0 and 1.
+
+### angles ()
+Finds a color between two angles.  Weight is a ratio between 0 and 1 to use for mixing the angles
+
+**Browser**
+```ts
+const ninety = just.mix.angles('0', '180deg')(.5);
+const oneEighty = just.mix.angles('0', '1turn')(.5);
+const twoSeventy = just.mix.angles('180deg', '6.2832rad')(.5);
+const zero = just.mix.angles('300grad', '.25turn')(.5);
+```
+
+**Bundled**
+```ts
+import { angles } from 'just-mix';
+
+const ninety = angles('0', '180deg')(.5);
+const oneEighty = angles('0', '1turn')(.5);
+const twoSeventy = angles('180deg', '6.2832rad')(.5);
+const zero = angles('300grad', '.25turn')(.5);
+```
 
 ### colors ()
 Finds a color between two colors.  Weight is a ratio between 0 and 1 to use for mixing the colors
+
+[Demo on CodePen](http://codepen.io/notoriousb1t/pen/vgjXaP/?editors=0010)
 
 **Browser**
 ```ts
