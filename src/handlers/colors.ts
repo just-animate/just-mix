@@ -1,5 +1,5 @@
 import { clamp, mixer, IMixer, nil } from '../internal';
-import { numbers, percents, parseCssFunction } from '../handlers';
+import { numberFixed, interpolate, numberParse, percentParse, parseCssFunction } from '../handlers';
 
 const round = Math.round;
 const hexRegex = /#(([a-f0-9]{6})|([a-f0-9]{3}))$/i;
@@ -223,9 +223,9 @@ const parseColorFunction = (colorString: string): Channels | undefined => {
 
   if (fn === 'hsla' || fn === 'hsl') {
     const hsla: Channels = [
-      parseFloat(c[1]),
-      percents.parse(c[2]),
-      percents.parse(c[3]),
+      numberParse(c[1]),
+      percentParse(c[2]),
+      percentParse(c[3]),
       hasAlpha ? parseFloat(c[4]) : 1
     ];
     toRGB(hsla);
@@ -235,7 +235,10 @@ const parseColorFunction = (colorString: string): Channels | undefined => {
   return nil;
 };
 
-export const colors: IMixer<string, Channels> = mixer({
+export const colors: IMixer = mixer({
+  getDefault(): Channels {
+    return [0, 0, 0, 0];
+  },
   parse(input: string): Channels {
     const str = input.trim().toLowerCase();
     return parseNamedColor(str) || parseHexCode(str) || parseColorFunction(str) || [0, 0, 0, 1];
@@ -246,14 +249,16 @@ export const colors: IMixer<string, Channels> = mixer({
       + (a ? clamp(0, 255, x[0] / a) : x[0]) + ','
       + (a ? clamp(0, 255, x[1] / a) : x[1]) + ','
       + (a ? clamp(0, 255, x[2] / a) : x[2]) + ','
-      + numbers.format(clamp(0, 1, a)) + ')';
+      + numberFixed(clamp(0, 1, a)) + ')';
   },
-  interpolate(l: Channels, r: Channels, o: number): Channels {
-    return [
-      round(numbers.interpolate(l[0], r[0], o)),
-      round(numbers.interpolate(l[1], r[1], o)),
-      round(numbers.interpolate(l[2], r[2], o)),
-      numbers.interpolate(l[3], r[3], o)
-    ];
+  optimize(values: Channels[]): Channels[] {
+    return values;
+  },
+  interpolate(l: Channels, r: Channels, o: number, out: Channels): Channels {
+    out[0] = round(interpolate(l[0], r[0], o));
+    out[1] = round(interpolate(l[1], r[1], o));
+    out[2] = round(interpolate(l[2], r[2], o));
+    out[3] = interpolate(l[3], r[3], o);
+    return out;
   }
 });

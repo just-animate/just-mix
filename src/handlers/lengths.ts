@@ -1,4 +1,4 @@
-import { numbers } from './numbers';
+import { numberFixed, numberParse, interpolate } from './numbers';
 import { mixer, IMixer, nil, inToPx, cmToPx, mmToPx, ptToPx, pcToPx, qToPx, isSquare } from '../internal';
 
 export type LengthValue = [number, string | undefined];
@@ -6,7 +6,8 @@ export type LengthValue = [number, string | undefined];
 const unitExpression = /^([\-]{0,1}[0-9]*[\.]{0,1}[0-9]*){1}(px|in|cm|mm|em|rem|pt|pc|ex|ch|vw|vh|vmin|vmax|q|%){0,1}$/i;
 const px = 'px';
 
-const types = {
+export const lengthUnits = {
+  none: 0,
   px: 1,
   in: 2,
   cm: 4,
@@ -27,7 +28,7 @@ const types = {
 const getTypes = (values: LengthValue[]) => {
   let result = 0;
   for (let i = 0, len = values.length; i < len; i++) {
-    result |= types[values[i][1] as string];
+    result |= lengthUnits[values[i][1] as string];
   }
   return result;
 };
@@ -46,26 +47,31 @@ const toPixels = (length: LengthValue): LengthValue => {
   return [value * co, px];
 };
 
-export const lengths: IMixer<string, LengthValue> = mixer({
+export const lengths: IMixer = mixer({
+  getDefault(): LengthValue {
+    return [0, nil];
+  },
   parse(value: string): LengthValue {
     const match = unitExpression.exec(value) as RegExpExecArray;
-    const n = numbers.parse(match[1]);
+    const n = numberParse(match[1]);
     const unit = (n === 0 ? nil : match[2]) || nil;
     return [n, unit];
   },
   format(value: LengthValue): string {
     const n = value[0];
-    return n === 0 ? '0' : numbers.format(n) + (value[1] || px);
+    return n === 0 ? '0' : numberFixed(n) + (value[1] || px);
   },
-  interpolate(left: LengthValue, right: LengthValue, weight: number): LengthValue {
-    return [numbers.interpolate(left[0], right[0], weight), left[1] || right[1] || nil];
+  interpolate(left: LengthValue, right: LengthValue, weight: number, out: LengthValue): LengthValue {
+    out[0] = interpolate(left[0], right[0], weight);
+    out[1] = left[1] || right[1] || nil;
+    return out;
   },
   optimize(values: LengthValue[]): LengthValue[] {
     const valueTypes = getTypes(values);
 
     // all types are powers of two,
     const oneType = isSquare(valueTypes);
-    const hasRelativeUnits = valueTypes >= types.em;
+    const hasRelativeUnits = valueTypes >= lengthUnits.em;
 
     // if only one type is detected, no conversion is necessary
     if (oneType) {

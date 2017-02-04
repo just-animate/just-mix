@@ -144,26 +144,6 @@ const fivePercent = percents('0%', '10%')(.5);
 ```
 
 
-
-## Advanced functions
-Each css type has 4 additional functions that make up its simple function.  The four functions are as follows: ```parse()```,  ```format()```,  ```optimize()```, and  ```interpolate()```.  Normally, it is not necessary to use these directly, but for completeness, here they are.
-
-### ```parse(val) => obj```
-
-The parse function takes in each value and reduces it to an internal representation.  This is most often an array. In the case of ```lengths```, it is a two part array: [number, unitString].
-
-### ```format(obj) => val```
-
-The format function takes the internal representation and "formats" it back.  This normally returns a string.
-
-### ```optimize(obj[]) => obj[]```
-
-The optimize function takes a series of objects (the internal representations of the values) and makes edits so that they are in the most efficent format possible relative to each other.  For performance reasons, the original array is mutated.
-
-### ```interpolate(obj, obj, weight) => obj```
-
-The interpolate function mixes the two internal representations together relative to the weight provided and returns the result.
-
 ## What's next?
 
-Next up is adding support for angles.   Stay tuned!
+Next up is adding support for transforms.   Stay tuned!

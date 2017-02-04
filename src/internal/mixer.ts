@@ -1,37 +1,36 @@
-export interface IMixer<TFormat, TValue> {
-  (...values: TFormat[]): (weight: number) => TFormat;
-  format(val: TValue): TFormat;
-  interpolate(left: TValue, right: TValue, weight: number): TValue;
-  parse(val: TFormat): TValue;
-  optimize(values: TValue[]): TValue[];
+export interface IMixer {
+  (...values: string[]): (weight: number) => string;
 }
 
-const returnValue = <T1>(t1: T1) => t1;
+export interface IMixerOptions<TValue> {
+  parse(t: string): TValue;
+  format(t: TValue): string;
+  interpolate(left: TValue, right: TValue, weight: number, out: TValue): TValue;
+  optimize(values: TValue[]): void;
+  getDefault(): TValue;
+};
 
-export const mixer = <TFormat, TValue>({parse, format, interpolate, optimize}: {
-  parse(t: TFormat): TValue;
-  format(t: TValue): TFormat;
-  interpolate(left: TValue, right: TValue, weight: number): TValue;
-  optimize?: (values: TValue[]) => TValue[];
-}) => {
-  const optimizeFn = optimize || returnValue;
+const noop = () => { /* do nothing */ };
 
-  const fn = (function (): (weight: number) => TFormat {
-    const args = arguments;
-    const values = optimizeFn(Array.prototype.map.call(args, parse));
+export const mixer = <TValue>({ parse, format, interpolate, optimize, getDefault }: IMixerOptions<TValue>) => {
+  const optimizeFn = optimize || noop;
+  let out = getDefault();
+
+  const fn = (function (): (weight: number) => string {
+    const values = Array.prototype.map.call(arguments, parse);
     const lastIndex = values.length - 1;
+
+    optimizeFn(values);
+
     return (weight: number) => {
       const pos = lastIndex * weight;
       const left = Math.floor(pos);
       const right = Math.ceil(pos);
       const offset = pos - left;
-      return format(interpolate(values[left], values[right], offset));
+      out = interpolate(values[left], values[right], offset, out);
+      return format(out);
     };
-  }) as IMixer<TFormat, TValue>;
+  }) as IMixer;
 
-  fn.parse = parse;
-  fn.format = format;
-  fn.interpolate = interpolate;
-  fn.optimize = optimizeFn;
   return fn;
 };
