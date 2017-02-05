@@ -6,12 +6,16 @@
 [![Build Status](https://travis-ci.org/just-animate/just-mix.svg?branch=master)](https://travis-ci.org/just-animate/just-mix)
 [![Downloads](https://img.shields.io/npm/dm/just-mix.svg)](https://www.npmjs.com/package/just-mix)
 
-## Why use JustMix?
+## Features
 
 - Simple CSS value parsing and interpolation
-- Interpolates colors, lengths, percentages, etc.
-- Animate from the ground up with a performant advanced API
-- Small download size with no dependencies
+- Interpolates angles, colors, lengths, percentages, etc.
+
+## Why use JustMix?
+
+- Small download size with no dependencies __(current minified size is 7KB)__
+- Optimized for tree-shaking (bundle only what you use)
+- Constantly optimized for best performance
 
 > Power this project up with 🌟s,  [^ star it please](https://github.com/just-animate/just-mix/stargazers).
 
@@ -136,3 +140,7 @@ const fivePercent = percents('0%', '10%')(.5);
 ## What's next?
 
 Next up is adding support for transforms.   Stay tuned!
+
+## Contributions
+
+Contributions and issues are very welcome :)  Make sure to put in an issue with your intent before doing a Pull Request.
