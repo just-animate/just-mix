@@ -1,7 +1,9 @@
 import { numberFixed, numberParse, interpolate } from './numbers';
-import { mixer, IMixer, inToPx, cmToPx, mmToPx, ptToPx, pcToPx, qToPx, isSquare, flipLookup, round } from '../internal';
+import {
+  mixer, IMixer, inToPx, cmToPx, mmToPx, ptToPx, pcToPx, qToPx, isSquare, flipLookup, round
+} from '../internal';
 
-const unitExpression = /^([\-]{0,1}[0-9]*[\.]{0,1}[0-9]*){1}(px|in|cm|mm|em|rem|pt|pc|ex|ch|vw|vh|vmin|vmax|q|%){0,1}$/i;
+export type LengthValue = { value: number, unit: number };
 
 export const lengthUnits = {
   none: 0,
@@ -23,17 +25,17 @@ export const lengthUnits = {
   '%': 32768
 };
 
+const unitExpression = /^([\-]{0,1}[0-9]*[\.]{0,1}[0-9]*){1}(px|in|cm|mm|em|rem|pt|pc|ex|ch|vw|vh|vmin|vmax|q|%){0,1}$/i;
 const unitToName = flipLookup(lengthUnits);
 
-export type LengthValue = { value: number, unit: number };
-
-const getTypes = (values: LengthValue[]) => {
+const reduceTypes = (values: LengthValue[]) => {
   let result = lengthUnits.none;
   for (let i = 0, len = values.length; i < len; i++) {
     result |= values[i].unit;
   }
   return result;
 };
+
 
 const toPixels = (length: LengthValue): LengthValue => {
   const unit = length.unit;
@@ -67,7 +69,7 @@ export const lengthFormat = (length: LengthValue): string => {
 };
 
 export const lengthOptimize = (values: LengthValue[]): LengthValue[] => {
-  const valueTypes = getTypes(values);
+  const valueTypes = reduceTypes(values);
 
   // all types are powers of two,
   const oneType = isSquare(valueTypes);
@@ -93,9 +95,9 @@ export const lengthOptimize = (values: LengthValue[]): LengthValue[] => {
 export const lengthInterpolate = (left: LengthValue, right: LengthValue, weight: number, out: LengthValue): LengthValue => {
   const unit = left.unit || right.unit || lengthUnits.none;
 
-  let value = interpolate(left.value, right.value, weight); 
+  let value = interpolate(left.value, right.value, weight);
 
-  // round px units (since a partial pixel is less than useful in most cases)  
+  // round px units (since a partial pixel is less than useful in most cases)
   if (unit === lengthUnits.px) {
       value = round(value);
   }

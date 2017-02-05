@@ -1,3 +1,5 @@
+import { ceil, floor } from '../internal';
+
 export interface IMixer {
   (...values: string[]): (weight: number) => string;
 }
@@ -10,27 +12,34 @@ export interface IMixerOptions<TValue> {
   getDefault(): TValue;
 };
 
-const noop = () => { /* do nothing */ };
-
 export const mixer = <TValue>({ parse, format, interpolate, optimize, getDefault }: IMixerOptions<TValue>) => {
-  const optimizeFn = optimize || noop;
   let out = getDefault();
 
-  const fn = (function (): (weight: number) => string {
-    const values = Array.prototype.map.call(arguments, parse);
-    const lastIndex = values.length - 1;
+  return function (): (weight: number) => string {
+    const args = arguments;
+    const len = args.length;
+    const lastIndex = len - 1;
 
-    optimizeFn(values);
+    const values: TValue[] = [];
+    let i = -1;
+    while (++i < len) {
+      values[i] = parse(args[i]);
+    }
+
+    optimize(values as TValue[]);
 
     return (weight: number) => {
       const pos = lastIndex * weight;
-      const left = Math.floor(pos);
-      const right = Math.ceil(pos);
-      const offset = pos - left;
-      out = interpolate(values[left], values[right], offset, out);
-      return format(out);
-    };
-  }) as IMixer;
+      const left = floor(pos);
 
-  return fn;
+      return format(
+        interpolate(
+          values[left],
+          values[ceil(pos)],
+          pos - left,
+          out
+        )
+      );
+    };
+  };
 };
