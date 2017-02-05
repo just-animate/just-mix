@@ -1,530 +1,646 @@
-import { lengths } from '../../src/handlers';
+import { lengths, lengthFormat, lengthParse, lengthInterpolate, LengthValue, lengthUnits } from '../../src/handlers';
 import * as assert from 'assert';
 
 describe('lengths', () => {
 
   describe('format(no-unit)', () => {
-    it('formats [0, undefined] as 0', () => {
-      assert.equal('-0.100px', lengths.format([-.1, undefined]));
+    it('formats [0, lengthUnits.none] as 0', () => {
+      assert.equal('-0.100px', lengthFormat([-.1, lengthUnits.none]));
     });
-    it('formats [-.1, undefined] as -.1px', () => {
-      assert.equal('-0.100px', lengths.format([-.1, undefined]));
+    it('formats [-.1, lengthUnits.none] as -.1px', () => {
+      assert.equal('-0.100px', lengthFormat([-.1, lengthUnits.none]));
     });
-    it('formats [1, undefined] as 1px', () => {
-      assert.equal('1px', lengths.format([1, undefined]));
+    it('formats [1, lengthUnits.none] as 1px', () => {
+      assert.equal('1px', lengthFormat([1, lengthUnits.none]));
     });
   });
 
   describe('format(px)', () => {
     it('formats [-.1, px] as -.1px', () => {
-      assert.equal('-0.100px', lengths.format([-.1, 'px']));
+      assert.equal('-0.100px', lengthFormat([-.1, lengthUnits.px]));
     });
     it('formats [1, px] as 1px', () => {
-      assert.equal('1px', lengths.format([1, 'px']));
+      assert.equal('1px', lengthFormat([1, lengthUnits.px]));
     });
   });
 
   describe('format(in)', () => {
     it('formats [-.1, in] as -.1in', () => {
-      assert.equal('-0.100in', lengths.format([-.1, 'in']));
+      assert.equal('-0.100in', lengthFormat([-.1, lengthUnits.in]));
     });
     it('formats [1, in] as 1in', () => {
-      assert.equal('1in', lengths.format([1, 'in']));
+      assert.equal('1in', lengthFormat([1, lengthUnits.in]));
     });
   });
 
   describe('format(cm)', () => {
     it('formats [-.1, cm] as -.1cm', () => {
-      assert.equal('-0.100cm', lengths.format([-.1, 'cm']));
+      assert.equal('-0.100cm', lengthFormat([-.1, lengthUnits.cm]));
     });
     it('formats [1, cm] as 1cm', () => {
-      assert.equal('1cm', lengths.format([1, 'cm']));
+      assert.equal('1cm', lengthFormat([1, lengthUnits.cm]));
     });
   });
 
   describe('format(mm)', () => {
     it('formats [-.1, mm] as -.1mm', () => {
-      assert.equal('-0.100mm', lengths.format([-.1, 'mm']));
+      assert.equal('-0.100mm', lengthFormat([-.1, lengthUnits.mm]));
     });
     it('formats [1, mm] as 1mm', () => {
-      assert.equal('1mm', lengths.format([1, 'mm']));
+      assert.equal('1mm', lengthFormat([1, lengthUnits.mm]));
     });
   });
   describe('format(pt)', () => {
     it('formats [-.1, pt] as -.1pt', () => {
-      assert.equal('-0.100pt', lengths.format([-.1, 'pt']));
+      assert.equal('-0.100pt', lengthFormat([-.1, lengthUnits.pt]));
     });
     it('formats [1, pt] as 1pt', () => {
-      assert.equal('1pt', lengths.format([1, 'pt']));
+      assert.equal('1pt', lengthFormat([1, lengthUnits.pt]));
     });
   });
   describe('format(pc)', () => {
     it('formats [-.1, pc] as -.1pc', () => {
-      assert.equal('-0.100pc', lengths.format([-.1, 'pc']));
+      assert.equal('-0.100pc', lengthFormat([-.1, lengthUnits.pc]));
     });
     it('formats [1, pc] as 1pc', () => {
-      assert.equal('1pc', lengths.format([1, 'pc']));
+      assert.equal('1pc', lengthFormat([1, lengthUnits.pc]));
     });
   });
   describe('format(q)', () => {
     it('formats [-.1, q] as -.1q', () => {
-      assert.equal('-0.100q', lengths.format([-.1, 'q']));
+      assert.equal('-0.100q', lengthFormat([-.1, lengthUnits.q]));
     });
     it('formats [1, q] as 1q', () => {
-      assert.equal('1q', lengths.format([1, 'q']));
+      assert.equal('1q', lengthFormat([1, lengthUnits.q]));
     });
   });
   describe('format(em)', () => {
     it('formats [-.1, em] as -.1em', () => {
-      assert.equal('-0.100em', lengths.format([-.1, 'em']));
+      assert.equal('-0.100em', lengthFormat([-.1, lengthUnits.em]));
     });
     it('formats [1, em] as 1em', () => {
-      assert.equal('1em', lengths.format([1, 'em']));
+      assert.equal('1em', lengthFormat([1, lengthUnits.em]));
     });
   });
   describe('format(rem)', () => {
     it('formats [-.1, rem] as -.1rem', () => {
-      assert.equal('-0.100rem', lengths.format([-.1, 'rem']));
+      assert.equal('-0.100rem', lengthFormat([-.1, lengthUnits.rem]));
     });
     it('formats [1, rem] as 1rem', () => {
-      assert.equal('1rem', lengths.format([1, 'rem']));
+      assert.equal('1rem', lengthFormat([1, lengthUnits.rem]));
     });
   });
   describe('format(ex)', () => {
     it('formats [-.1, ex] as -.1ex', () => {
-      assert.equal('-0.100ex', lengths.format([-.1, 'ex']));
+      assert.equal('-0.100ex', lengthFormat([-.1, lengthUnits.ex]));
     });
     it('formats [1, ex] as 1ex', () => {
-      assert.equal('1ex', lengths.format([1, 'ex']));
+      assert.equal('1ex', lengthFormat([1, lengthUnits.ex]));
     });
   });
   describe('format(vw)', () => {
     it('formats [-.1, vw] as -.1vw', () => {
-      assert.equal('-0.100vw', lengths.format([-.1, 'vw']));
+      assert.equal('-0.100vw', lengthFormat([-.1, lengthUnits.vw]));
     });
     it('formats [1, vw] as 1vw', () => {
-      assert.equal('1vw', lengths.format([1, 'vw']));
+      assert.equal('1vw', lengthFormat([1, lengthUnits.vw]));
     });
   });
   describe('format(vh)', () => {
     it('formats [-.1, vh] as -.1vh', () => {
-      assert.equal('-0.100vh', lengths.format([-.1, 'vh']));
+      assert.equal('-0.100vh', lengthFormat([-.1, lengthUnits.vh]));
     });
     it('formats [1, vh] as 1vh', () => {
-      assert.equal('1vh', lengths.format([1, 'vh']));
+      assert.equal('1vh', lengthFormat([1, lengthUnits.vh]));
     });
   });
   describe('format(vmin)', () => {
     it('formats [-.1, vmin] as -.1vmin', () => {
-      assert.equal('-0.100vmin', lengths.format([-.1, 'vmin']));
+      assert.equal('-0.100vmin', lengthFormat([-.1, lengthUnits.vmin]));
     });
     it('formats [1, vmin] as 1vmin', () => {
-      assert.equal('1vmin', lengths.format([1, 'vmin']));
+      assert.equal('1vmin', lengthFormat([1, lengthUnits.vmin]));
     });
   });
   describe('format(vmax)', () => {
     it('formats [-.1, vmax] as -.1vmax', () => {
-      assert.equal('-0.100vmax', lengths.format([-.1, 'vmax']));
+      assert.equal('-0.100vmax', lengthFormat([-.1, lengthUnits.vmax]));
     });
     it('formats [1, vmax] as 1vmax', () => {
-      assert.equal('1vmax', lengths.format([1, 'vmax']));
+      assert.equal('1vmax', lengthFormat([1, lengthUnits.vmax]));
     });
   });
   describe('format(ch)', () => {
     it('formats [-.1, ch] as -.1ch', () => {
-      assert.equal('-0.100ch', lengths.format([-.1, 'ch']));
+      assert.equal('-0.100ch', lengthFormat([-.1, lengthUnits.ch]));
     });
     it('formats [1, ch] as 1ch', () => {
-      assert.equal('1ch', lengths.format([1, 'ch']));
+      assert.equal('1ch', lengthFormat([1, lengthUnits.ch]));
     });
   });
 
   describe('parse(0)', () => {
-    it('parses 0 as [0, undefined]', () => {
-      assert.deepEqual([0, undefined], lengths.parse('0'));
+    it('parses 0 as [0, lengthUnits.none]', () => {
+      assert.deepEqual([0, lengthUnits.none], lengthParse('0'));
     });
   });
 
   describe('parse(px)', () => {
     it('parses 1px as [1, px]', () => {
-      assert.deepEqual([1, 'px'], lengths.parse('1px'));
+      assert.deepEqual([1, lengthUnits.px], lengthParse('1px'));
     });
     it('parses -.1px as [-.1, px]', () => {
-      assert.deepEqual([-.1, 'px'], lengths.parse('-.1px'));
+      assert.deepEqual([-.1, lengthUnits.px], lengthParse('-.1px'));
     });
     it('parses 1px as [1, px]', () => {
-      assert.deepEqual([1, 'px'], lengths.parse('1px'));
+      assert.deepEqual([1, lengthUnits.px], lengthParse('1px'));
     });
   });
 
   describe('parse(in)', () => {
     it('parses 1in as [1, in]', () => {
-      assert.deepEqual([1, 'in'], lengths.parse('1in'));
+      assert.deepEqual([1, lengthUnits.in], lengthParse('1in'));
     });
     it('parses -.1in as [-.1, in]', () => {
-      assert.deepEqual([-.1, 'in'], lengths.parse('-.1in'));
+      assert.deepEqual([-.1, lengthUnits.in], lengthParse('-.1in'));
     });
     it('parses 1in as [1, in]', () => {
-      assert.deepEqual([1, 'in'], lengths.parse('1in'));
+      assert.deepEqual([1, lengthUnits.in], lengthParse('1in'));
     });
   });
 
   describe('parse(cm)', () => {
     it('parses 1cm as [1, cm]', () => {
-      assert.deepEqual([1, 'cm'], lengths.parse('1cm'));
+      assert.deepEqual([1, lengthUnits.cm], lengthParse('1cm'));
     });
     it('parses -.1cm as [-.1, cm]', () => {
-      assert.deepEqual([-.1, 'cm'], lengths.parse('-.1cm'));
+      assert.deepEqual([-.1, lengthUnits.cm], lengthParse('-.1cm'));
     });
     it('parses 1cm as [1, cm]', () => {
-      assert.deepEqual([1, 'cm'], lengths.parse('1cm'));
+      assert.deepEqual([1, lengthUnits.cm], lengthParse('1cm'));
     });
   });
 
   describe('parse(mm)', () => {
     it('parses 1mm as [1, mm]', () => {
-      assert.deepEqual([1, 'mm'], lengths.parse('1mm'));
+      assert.deepEqual([1, lengthUnits.mm], lengthParse('1mm'));
     });
     it('parses -.1mm as [-.1, mm]', () => {
-      assert.deepEqual([-.1, 'mm'], lengths.parse('-.1mm'));
+      assert.deepEqual([-.1, lengthUnits.mm], lengthParse('-.1mm'));
     });
     it('parses 1mm as [1, mm]', () => {
-      assert.deepEqual([1, 'mm'], lengths.parse('1mm'));
+      assert.deepEqual([1, lengthUnits.mm], lengthParse('1mm'));
     });
   });
   describe('parse(pt)', () => {
     it('parses 1pt as [1, pt]', () => {
-      assert.deepEqual([1, 'pt'], lengths.parse('1pt'));
+      assert.deepEqual([1, lengthUnits.pt], lengthParse('1pt'));
     });
     it('parses -.1pt as [-.1, pt]', () => {
-      assert.deepEqual([-.1, 'pt'], lengths.parse('-.1pt'));
+      assert.deepEqual([-.1, lengthUnits.pt], lengthParse('-.1pt'));
     });
     it('parses 1pt as [1, pt]', () => {
-      assert.deepEqual([1, 'pt'], lengths.parse('1pt'));
+      assert.deepEqual([1, lengthUnits.pt], lengthParse('1pt'));
     });
   });
   describe('parse(pc)', () => {
     it('parses 1pc as [1, pc]', () => {
-      assert.deepEqual([1, 'pc'], lengths.parse('1pc'));
+      assert.deepEqual([1, lengthUnits.pc], lengthParse('1pc'));
     });
     it('parses -.1pc as [-.1, pc]', () => {
-      assert.deepEqual([-.1, 'pc'], lengths.parse('-.1pc'));
+      assert.deepEqual([-.1, lengthUnits.pc], lengthParse('-.1pc'));
     });
     it('parses 1pc as [1, pc]', () => {
-      assert.deepEqual([1, 'pc'], lengths.parse('1pc'));
+      assert.deepEqual([1, lengthUnits.pc], lengthParse('1pc'));
     });
   });
   describe('parse(q)', () => {
     it('parses 1q as [1, q]', () => {
-      assert.deepEqual([1, 'q'], lengths.parse('1q'));
+      assert.deepEqual([1, lengthUnits.q], lengthParse('1q'));
     });
     it('parses -.1q as [-.1, q]', () => {
-      assert.deepEqual([-.1, 'q'], lengths.parse('-.1q'));
+      assert.deepEqual([-.1, lengthUnits.q], lengthParse('-.1q'));
     });
     it('parses 1q as [1, q]', () => {
-      assert.deepEqual([1, 'q'], lengths.parse('1q'));
+      assert.deepEqual([1, lengthUnits.q], lengthParse('1q'));
     });
   });
   describe('parse(em)', () => {
     it('parses 1em as [1, em]', () => {
-      assert.deepEqual([1, 'em'], lengths.parse('1em'));
+      assert.deepEqual([1, lengthUnits.em], lengthParse('1em'));
     });
     it('parses -.1em as [-.1, em]', () => {
-      assert.deepEqual([-.1, 'em'], lengths.parse('-.1em'));
+      assert.deepEqual([-.1, lengthUnits.em], lengthParse('-.1em'));
     });
     it('parses 1em as [1, em]', () => {
-      assert.deepEqual([1, 'em'], lengths.parse('1em'));
+      assert.deepEqual([1, lengthUnits.em], lengthParse('1em'));
     });
   });
   describe('parse(rem)', () => {
     it('parses 1rem as [1, rem]', () => {
-      assert.deepEqual([1, 'rem'], lengths.parse('1rem'));
+      assert.deepEqual([1, lengthUnits.rem], lengthParse('1rem'));
     });
     it('parses -.1rem as [-.1, rem]', () => {
-      assert.deepEqual([-.1, 'rem'], lengths.parse('-.1rem'));
+      assert.deepEqual([-.1, lengthUnits.rem], lengthParse('-.1rem'));
     });
     it('parses 1rem as [1, rem]', () => {
-      assert.deepEqual([1, 'rem'], lengths.parse('1rem'));
+      assert.deepEqual([1, lengthUnits.rem], lengthParse('1rem'));
     });
   });
   describe('parse(ex)', () => {
     it('parses 1ex as [1, ex]', () => {
-      assert.deepEqual([1, 'ex'], lengths.parse('1ex'));
+      assert.deepEqual([1, lengthUnits.ex], lengthParse('1ex'));
     });
     it('parses -.1ex as [-.1, ex]', () => {
-      assert.deepEqual([-.1, 'ex'], lengths.parse('-.1ex'));
+      assert.deepEqual([-.1, lengthUnits.ex], lengthParse('-.1ex'));
     });
     it('parses 1ex as [1, ex]', () => {
-      assert.deepEqual([1, 'ex'], lengths.parse('1ex'));
+      assert.deepEqual([1, lengthUnits.ex], lengthParse('1ex'));
     });
   });
   describe('parse(vw)', () => {
     it('parses 1vw as [1, vw]', () => {
-      assert.deepEqual([1, 'vw'], lengths.parse('1vw'));
+      assert.deepEqual([1, lengthUnits.vw], lengthParse('1vw'));
     });
     it('parses -.1vw as [-.1, vw]', () => {
-      assert.deepEqual([-.1, 'vw'], lengths.parse('-.1vw'));
+      assert.deepEqual([-.1, lengthUnits.vw], lengthParse('-.1vw'));
     });
     it('parses 1vw as [1, vw]', () => {
-      assert.deepEqual([1, 'vw'], lengths.parse('1vw'));
+      assert.deepEqual([1, lengthUnits.vw], lengthParse('1vw'));
     });
   });
   describe('parse(vh)', () => {
     it('parses 1vh as [1, vh]', () => {
-      assert.deepEqual([1, 'vh'], lengths.parse('1vh'));
+      assert.deepEqual([1, lengthUnits.vh], lengthParse('1vh'));
     });
     it('parses -.1vh as [-.1, vh]', () => {
-      assert.deepEqual([-.1, 'vh'], lengths.parse('-.1vh'));
+      assert.deepEqual([-.1, lengthUnits.vh], lengthParse('-.1vh'));
     });
     it('parses 1vh as [1, vh]', () => {
-      assert.deepEqual([1, 'vh'], lengths.parse('1vh'));
+      assert.deepEqual([1, lengthUnits.vh], lengthParse('1vh'));
     });
   });
   describe('parse(vmin)', () => {
     it('parses 1vmin as [1, vmin]', () => {
-      assert.deepEqual([1, 'vmin'], lengths.parse('1vmin'));
+      assert.deepEqual([1, lengthUnits.vmin], lengthParse('1vmin'));
     });
     it('parses -.1vmin as [-.1, vmin]', () => {
-      assert.deepEqual([-.1, 'vmin'], lengths.parse('-.1vmin'));
+      assert.deepEqual([-.1, lengthUnits.vmin], lengthParse('-.1vmin'));
     });
     it('parses 1vmin as [1, vmin]', () => {
-      assert.deepEqual([1, 'vmin'], lengths.parse('1vmin'));
+      assert.deepEqual([1, lengthUnits.vmin], lengthParse('1vmin'));
     });
   });
   describe('parse(vmax)', () => {
     it('parses 1vmax as [1, vmax]', () => {
-      assert.deepEqual([1, 'vmax'], lengths.parse('1vmax'));
+      assert.deepEqual([1, lengthUnits.vmax], lengthParse('1vmax'));
     });
     it('parses -.1vmax as [-.1, vmax]', () => {
-      assert.deepEqual([-.1, 'vmax'], lengths.parse('-.1vmax'));
+      assert.deepEqual([-.1, lengthUnits.vmax], lengthParse('-.1vmax'));
     });
     it('parses 1vmax as [1, vmax]', () => {
-      assert.deepEqual([1, 'vmax'], lengths.parse('1vmax'));
+      assert.deepEqual([1, lengthUnits.vmax], lengthParse('1vmax'));
     });
   });
   describe('parse(ch)', () => {
     it('parses 1ch as [1, ch]', () => {
-      assert.deepEqual([1, 'ch'], lengths.parse('1ch'));
+      assert.deepEqual([1, lengthUnits.ch], lengthParse('1ch'));
     });
     it('parses -.1ch as [-.1, ch]', () => {
-      assert.deepEqual([-.1, 'ch'], lengths.parse('-.1ch'));
+      assert.deepEqual([-.1, lengthUnits.ch], lengthParse('-.1ch'));
     });
     it('parses 1ch as [1, ch]', () => {
-      assert.deepEqual([1, 'ch'], lengths.parse('1ch'));
+      assert.deepEqual([1, lengthUnits.ch], lengthParse('1ch'));
     });
   });
-
   describe('interpolate(px)', () => {
     it('interpolate 0, 1px, 0 = 0', () => {
-      assert.deepEqual([0, 'px'], lengths.interpolate([0, undefined], [1, 'px'], 0));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.px], 0, out);
+      assert.deepEqual([0, lengthUnits.px], out);
     });
     it('interpolate 0, 1px, .5 = .5px', () => {
-      assert.deepEqual([.5, 'px'], lengths.interpolate([0, undefined], [1, 'px'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.px], .5, out);
+      assert.deepEqual([.5, lengthUnits.px], out);
     });
     it('interpolate .5px, 1px, .5 = .75px', () => {
-      assert.deepEqual([.75, 'px'], lengths.interpolate([.5, 'px'], [1, 'px'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([.5, lengthUnits.px], [1, lengthUnits.px], .5, out);
+      assert.deepEqual([.75, lengthUnits.px], out);
     });
     it('interpolate 0, 1px, 1 = 1px', () => {
-      assert.deepEqual([1, 'px'], lengths.interpolate([0, undefined], [1, 'px'], 1));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.px], 1, out);
+      assert.deepEqual([1, lengthUnits.px], out);
     });
   });
-
   describe('interpolate(in)', () => {
     it('interpolate 0, 1in, 0 = 0', () => {
-      assert.deepEqual([0, 'in'], lengths.interpolate([0, undefined], [1, 'in'], 0));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.in], 0, out);
+      assert.deepEqual([0, lengthUnits.in], out);
     });
     it('interpolate 0, 1in, .5 = .5in', () => {
-      assert.deepEqual([.5, 'in'], lengths.interpolate([0, undefined], [1, 'in'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.in], .5, out);
+      assert.deepEqual([.5, lengthUnits.in], out);
     });
     it('interpolate .5in, 1in, .5 = .75in', () => {
-      assert.deepEqual([.75, 'in'], lengths.interpolate([.5, 'in'], [1, 'in'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([.5, lengthUnits.in], [1, lengthUnits.in], .5, out);
+      assert.deepEqual([.75, lengthUnits.in], out);
     });
     it('interpolate 0, 1in, 1 = 1in', () => {
-      assert.deepEqual([1, 'in'], lengths.interpolate([0, undefined], [1, 'in'], 1));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.in], 1, out);
+      assert.deepEqual([1, lengthUnits.in], out);
     });
   });
-
   describe('interpolate(cm)', () => {
     it('interpolate 0, 1cm, 0 = 0', () => {
-      assert.deepEqual([0, 'cm'], lengths.interpolate([0, undefined], [1, 'cm'], 0));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.cm], 0, out);
+      assert.deepEqual([0, lengthUnits.cm], out);
     });
     it('interpolate 0, 1cm, .5 = .5cm', () => {
-      assert.deepEqual([.5, 'cm'], lengths.interpolate([0, undefined], [1, 'cm'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.cm], .5, out);
+      assert.deepEqual([.5, lengthUnits.cm], out);
     });
     it('interpolate .5cm, 1cm, .5 = .75cm', () => {
-      assert.deepEqual([.75, 'cm'], lengths.interpolate([.5, 'cm'], [1, 'cm'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([.5, lengthUnits.cm], [1, lengthUnits.cm], .5, out);
+      assert.deepEqual([.75, lengthUnits.cm], out);
     });
     it('interpolate 0, 1cm, 1 = 1cm', () => {
-      assert.deepEqual([1, 'cm'], lengths.interpolate([0, undefined], [1, 'cm'], 1));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.cm], 1, out);
+      assert.deepEqual([1, lengthUnits.cm], out);
     });
   });
-
   describe('interpolate(mm)', () => {
     it('interpolate 0, 1mm, 0 = 0', () => {
-      assert.deepEqual([0, 'mm'], lengths.interpolate([0, undefined], [1, 'mm'], 0));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.mm], 0, out);
+      assert.deepEqual([0, lengthUnits.mm], out);
     });
     it('interpolate 0, 1mm, .5 = .5mm', () => {
-      assert.deepEqual([.5, 'mm'], lengths.interpolate([0, undefined], [1, 'mm'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.mm], .5, out);
+      assert.deepEqual([.5, lengthUnits.mm], out);
     });
     it('interpolate .5mm, 1mm, .5 = .75mm', () => {
-      assert.deepEqual([.75, 'mm'], lengths.interpolate([.5, 'mm'], [1, 'mm'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([.5, lengthUnits.mm], [1, lengthUnits.mm], .5, out);
+      assert.deepEqual([.75, lengthUnits.mm], out);
     });
     it('interpolate 0, 1mm, 1 = 1mm', () => {
-      assert.deepEqual([1, 'mm'], lengths.interpolate([0, undefined], [1, 'mm'], 1));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.mm], 1, out);
+      assert.deepEqual([1, lengthUnits.mm], out);
     });
   });
   describe('interpolate(pt)', () => {
     it('interpolate 0, 1pt, 0 = 0', () => {
-      assert.deepEqual([0, 'pt'], lengths.interpolate([0, undefined], [1, 'pt'], 0));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.pt], 0, out);
+      assert.deepEqual([0, lengthUnits.pt], out);
     });
     it('interpolate 0, 1pt, .5 = .5pt', () => {
-      assert.deepEqual([.5, 'pt'], lengths.interpolate([0, undefined], [1, 'pt'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.pt], .5, out);
+      assert.deepEqual([.5, lengthUnits.pt], out);
     });
     it('interpolate .5pt, 1pt, .5 = .75pt', () => {
-      assert.deepEqual([.75, 'pt'], lengths.interpolate([.5, 'pt'], [1, 'pt'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([.5, lengthUnits.pt], [1, lengthUnits.pt], .5, out);
+      assert.deepEqual([.75, lengthUnits.pt], out);
     });
     it('interpolate 0, 1pt, 1 = 1pt', () => {
-      assert.deepEqual([1, 'pt'], lengths.interpolate([0, undefined], [1, 'pt'], 1));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.pt], 1, out);
+      assert.deepEqual([1, lengthUnits.pt], out);
     });
   });
   describe('interpolate(pc)', () => {
     it('interpolate 0, 1pc, 0 = 0', () => {
-      assert.deepEqual([0, 'pc'], lengths.interpolate([0, undefined], [1, 'pc'], 0));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.pc], 0, out);
+      assert.deepEqual([0, lengthUnits.pc], out);
     });
     it('interpolate 0, 1pc, .5 = .5pc', () => {
-      assert.deepEqual([.5, 'pc'], lengths.interpolate([0, undefined], [1, 'pc'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.pc], .5, out);
+      assert.deepEqual([.5, lengthUnits.pc], out);
     });
     it('interpolate .5pc, 1pc, .5 = .75pc', () => {
-      assert.deepEqual([.75, 'pc'], lengths.interpolate([.5, 'pc'], [1, 'pc'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([.5, lengthUnits.pc], [1, lengthUnits.pc], .5, out);
+      assert.deepEqual([.75, lengthUnits.pc], out);
     });
     it('interpolate 0, 1pc, 1 = 1pc', () => {
-      assert.deepEqual([1, 'pc'], lengths.interpolate([0, undefined], [1, 'pc'], 1));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.pc], 1, out);
+      assert.deepEqual([1, lengthUnits.pc], out);
     });
   });
   describe('interpolate(q)', () => {
     it('interpolate 0, 1q, 0 = 0', () => {
-      assert.deepEqual([0, 'q'], lengths.interpolate([0, undefined], [1, 'q'], 0));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.q], 0, out);
+      assert.deepEqual([0, lengthUnits.q], out);
     });
     it('interpolate 0, 1q, .5 = .5q', () => {
-      assert.deepEqual([.5, 'q'], lengths.interpolate([0, undefined], [1, 'q'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.q], .5, out);
+      assert.deepEqual([.5, lengthUnits.q], out);
     });
     it('interpolate .5q, 1q, .5 = .75q', () => {
-      assert.deepEqual([.75, 'q'], lengths.interpolate([.5, 'q'], [1, 'q'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([.5, lengthUnits.q], [1, lengthUnits.q], .5, out);
+      assert.deepEqual([.75, lengthUnits.q], out);
     });
     it('interpolate 0, 1q, 1 = 1q', () => {
-      assert.deepEqual([1, 'q'], lengths.interpolate([0, undefined], [1, 'q'], 1));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.q], 1, out);
+      assert.deepEqual([1, lengthUnits.q], out);
     });
   });
   describe('interpolate(em)', () => {
     it('interpolate 0, 1em, 0 = 0', () => {
-      assert.deepEqual([0, 'em'], lengths.interpolate([0, undefined], [1, 'em'], 0));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.em], 0, out);
+      assert.deepEqual([0, lengthUnits.em], out);
     });
     it('interpolate 0, 1em, .5 = .5em', () => {
-      assert.deepEqual([.5, 'em'], lengths.interpolate([0, undefined], [1, 'em'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.em], .5, out);
+      assert.deepEqual([.5, lengthUnits.em], out);
     });
     it('interpolate .5em, 1em, .5 = .75em', () => {
-      assert.deepEqual([.75, 'em'], lengths.interpolate([.5, 'em'], [1, 'em'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([.5, lengthUnits.em], [1, lengthUnits.em], .5, out);
+      assert.deepEqual([.75, lengthUnits.em], out);
     });
     it('interpolate 0, 1em, 1 = 1em', () => {
-      assert.deepEqual([1, 'em'], lengths.interpolate([0, undefined], [1, 'em'], 1));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.em], 1, out);
+      assert.deepEqual([1, lengthUnits.em], out);
     });
   });
   describe('interpolate(rem)', () => {
     it('interpolate 0, 1rem, 0 = 0', () => {
-      assert.deepEqual([0, 'rem'], lengths.interpolate([0, undefined], [1, 'rem'], 0));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.rem], 0, out);
+      assert.deepEqual([0, lengthUnits.rem], out);
     });
     it('interpolate 0, 1rem, .5 = .5rem', () => {
-      assert.deepEqual([.5, 'rem'], lengths.interpolate([0, undefined], [1, 'rem'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.rem], .5, out);
+      assert.deepEqual([.5, lengthUnits.rem], out);
     });
     it('interpolate .5rem, 1rem, .5 = .75rem', () => {
-      assert.deepEqual([.75, 'rem'], lengths.interpolate([.5, 'rem'], [1, 'rem'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([.5, lengthUnits.rem], [1, lengthUnits.rem], .5, out);
+      assert.deepEqual([.75, lengthUnits.rem], out);
     });
     it('interpolate 0, 1rem, 1 = 1rem', () => {
-      assert.deepEqual([1, 'rem'], lengths.interpolate([0, undefined], [1, 'rem'], 1));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.rem], 1, out);
+      assert.deepEqual([1, lengthUnits.rem], out);
     });
   });
   describe('interpolate(ex)', () => {
     it('interpolate 0, 1ex, 0 = 0', () => {
-      assert.deepEqual([0, 'ex'], lengths.interpolate([0, undefined], [1, 'ex'], 0));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.ex], 0, out);
+      assert.deepEqual([0, lengthUnits.ex], out);
     });
     it('interpolate 0, 1ex, .5 = .5ex', () => {
-      assert.deepEqual([.5, 'ex'], lengths.interpolate([0, undefined], [1, 'ex'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.ex], .5, out);
+      assert.deepEqual([.5, lengthUnits.ex], out);
     });
     it('interpolate .5ex, 1ex, .5 = .75ex', () => {
-      assert.deepEqual([.75, 'ex'], lengths.interpolate([.5, 'ex'], [1, 'ex'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([.5, lengthUnits.ex], [1, lengthUnits.ex], .5, out);
+      assert.deepEqual([.75, lengthUnits.ex], out);
     });
     it('interpolate 0, 1ex, 1 = 1ex', () => {
-      assert.deepEqual([1, 'ex'], lengths.interpolate([0, undefined], [1, 'ex'], 1));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.ex], 1, out);
+      assert.deepEqual([1, lengthUnits.ex], out);
     });
   });
   describe('interpolate(vw)', () => {
     it('interpolate 0, 1vw, 0 = 0', () => {
-      assert.deepEqual([0, 'vw'], lengths.interpolate([0, undefined], [1, 'vw'], 0));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.vw], 0, out);
+      assert.deepEqual([0, lengthUnits.vw], out);
     });
     it('interpolate 0, 1vw, .5 = .5vw', () => {
-      assert.deepEqual([.5, 'vw'], lengths.interpolate([0, undefined], [1, 'vw'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.vw], .5, out);
+      assert.deepEqual([.5, lengthUnits.vw], out);
     });
     it('interpolate .5vw, 1vw, .5 = .75vw', () => {
-      assert.deepEqual([.75, 'vw'], lengths.interpolate([.5, 'vw'], [1, 'vw'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([.5, lengthUnits.vw], [1, lengthUnits.vw], .5, out);
+      assert.deepEqual([.75, lengthUnits.vw], out);
     });
     it('interpolate 0, 1vw, 1 = 1vw', () => {
-      assert.deepEqual([1, 'vw'], lengths.interpolate([0, undefined], [1, 'vw'], 1));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.vw], 1, out);
+      assert.deepEqual([1, lengthUnits.vw], out);
     });
   });
   describe('interpolate(vh)', () => {
     it('interpolate 0, 1vh, 0 = 0', () => {
-      assert.deepEqual([0, 'vh'], lengths.interpolate([0, undefined], [1, 'vh'], 0));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.vh], 0, out);
+      assert.deepEqual([0, lengthUnits.vh], out);
     });
     it('interpolate 0, 1vh, .5 = .5vh', () => {
-      assert.deepEqual([.5, 'vh'], lengths.interpolate([0, undefined], [1, 'vh'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.vh], .5, out);
+      assert.deepEqual([.5, lengthUnits.vh], out);
     });
     it('interpolate .5vh, 1vh, .5 = .75vh', () => {
-      assert.deepEqual([.75, 'vh'], lengths.interpolate([.5, 'vh'], [1, 'vh'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([.5, lengthUnits.vh], [1, lengthUnits.vh], .5, out);
+      assert.deepEqual([.75, lengthUnits.vh], out);
     });
     it('interpolate 0, 1vh, 1 = 1vh', () => {
-      assert.deepEqual([1, 'vh'], lengths.interpolate([0, undefined], [1, 'vh'], 1));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.vh], 1, out);
+      assert.deepEqual([1, lengthUnits.vh], out);
     });
   });
   describe('interpolate(vmin)', () => {
     it('interpolate 0, 1vmin, 0 = 0', () => {
-      assert.deepEqual([0, 'vmin'], lengths.interpolate([0, undefined], [1, 'vmin'], 0));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.vmin], 0, out);
+      assert.deepEqual([0, lengthUnits.vmin], out);
     });
     it('interpolate 0, 1vmin, .5 = .5vmin', () => {
-      assert.deepEqual([.5, 'vmin'], lengths.interpolate([0, undefined], [1, 'vmin'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.vmin], .5, out);
+      assert.deepEqual([.5, lengthUnits.vmin], out);
     });
     it('interpolate .5vmin, 1vmin, .5 = .75vmin', () => {
-      assert.deepEqual([.75, 'vmin'], lengths.interpolate([.5, 'vmin'], [1, 'vmin'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([.5, lengthUnits.vmin], [1, lengthUnits.vmin], .5, out);
+      assert.deepEqual([.75, lengthUnits.vmin], out);
     });
     it('interpolate 0, 1vmin, 1 = 1vmin', () => {
-      assert.deepEqual([1, 'vmin'], lengths.interpolate([0, undefined], [1, 'vmin'], 1));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.vmin], 1, out);
+      assert.deepEqual([1, lengthUnits.vmin], out);
     });
   });
   describe('interpolate(vmax)', () => {
     it('interpolate 0, 1vmax, 0 = 0', () => {
-      assert.deepEqual([0, 'vmax'], lengths.interpolate([0, undefined], [1, 'vmax'], 0));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.vmax], 0, out);
+      assert.deepEqual([0, lengthUnits.vmax], out);
     });
     it('interpolate 0, 1vmax, .5 = .5vmax', () => {
-      assert.deepEqual([.5, 'vmax'], lengths.interpolate([0, undefined], [1, 'vmax'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.vmax], .5, out);
+      assert.deepEqual([.5, lengthUnits.vmax], out);
     });
     it('interpolate .5vmax, 1vmax, .5 = .75vmax', () => {
-      assert.deepEqual([.75, 'vmax'], lengths.interpolate([.5, 'vmax'], [1, 'vmax'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([.5, lengthUnits.vmax], [1, lengthUnits.vmax], .5, out);
+      assert.deepEqual([.75, lengthUnits.vmax], out);
     });
     it('interpolate 0, 1vmax, 1 = 1vmax', () => {
-      assert.deepEqual([1, 'vmax'], lengths.interpolate([0, undefined], [1, 'vmax'], 1));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.vmax], 1, out);
+      assert.deepEqual([1, lengthUnits.vmax], out);
     });
   });
   describe('interpolate(ch)', () => {
     it('interpolate 0, 1ch, 0 = 0', () => {
-      assert.deepEqual([0, 'ch'], lengths.interpolate([0, undefined], [1, 'ch'], 0));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.ch], 0, out);
+      assert.deepEqual([0, lengthUnits.ch], out);
     });
     it('interpolate 0, 1ch, .5 = .5ch', () => {
-      assert.deepEqual([.5, 'ch'], lengths.interpolate([0, undefined], [1, 'ch'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.ch], .5, out);
+      assert.deepEqual([.5, lengthUnits.ch], out);
     });
     it('interpolate .5ch, 1ch, .5 = .75ch', () => {
-      assert.deepEqual([.75, 'ch'], lengths.interpolate([.5, 'ch'], [1, 'ch'], .5));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([.5, lengthUnits.ch], [1, lengthUnits.ch], .5, out);
+      assert.deepEqual([.75, lengthUnits.ch], out);
     });
     it('interpolate 0, 1ch, 1 = 1ch', () => {
-      assert.deepEqual([1, 'ch'], lengths.interpolate([0, undefined], [1, 'ch'], 1));
+      const out = [0, lengthUnits.none] as LengthValue;
+      lengthInterpolate([0, lengthUnits.none], [1, lengthUnits.ch], 1, out);
+      assert.deepEqual([1, lengthUnits.ch], out);
     });
   });
 

@@ -1,10 +1,7 @@
 import { numberFixed, numberParse, interpolate } from './numbers';
-import { mixer, IMixer, nil, inToPx, cmToPx, mmToPx, ptToPx, pcToPx, qToPx, isSquare } from '../internal';
-
-export type LengthValue = [number, string | undefined];
+import { mixer, IMixer, inToPx, cmToPx, mmToPx, ptToPx, pcToPx, qToPx, isSquare, flipLookup } from '../internal';
 
 const unitExpression = /^([\-]{0,1}[0-9]*[\.]{0,1}[0-9]*){1}(px|in|cm|mm|em|rem|pt|pc|ex|ch|vw|vh|vmin|vmax|q|%){0,1}$/i;
-const px = 'px';
 
 export const lengthUnits = {
   none: 0,
@@ -22,66 +19,87 @@ export const lengthUnits = {
   vh: 2048,
   vmin: 4096,
   vmax: 8192,
-  ch: 16384
+  ch: 16384,
+  '%': 32768
 };
 
+const unitToName = flipLookup(lengthUnits);
+
+export type LengthValue = [number, number];
+
 const getTypes = (values: LengthValue[]) => {
-  let result = 0;
+  let result = lengthUnits.none;
   for (let i = 0, len = values.length; i < len; i++) {
-    result |= lengthUnits[values[i][1] as string];
+    result |= values[i][1];
   }
   return result;
 };
 
 const toPixels = (length: LengthValue): LengthValue => {
-  const value = length[0];
   const unit = length[1];
-  const co = unit === 'in'
-    ? inToPx : unit === 'cm'
-      ? cmToPx : unit === 'mm'
-        ? mmToPx : unit === 'pt'
-          ? ptToPx : unit === 'pc'
-            ? pcToPx : unit === 'q'
+  const co = unit === lengthUnits.in
+    ? inToPx : unit === lengthUnits.cm
+      ? cmToPx : unit === lengthUnits.mm
+        ? mmToPx : unit === lengthUnits.pt
+          ? ptToPx : unit === lengthUnits.pc
+            ? pcToPx : unit === lengthUnits.q
               ? qToPx : 1;
 
-  return [value * co, px];
+  length[0] *= co;
+  length[1] = lengthUnits.px;
+  return length;
+};
+
+export const lengthParse = (value: string): LengthValue => {
+  const match = unitExpression.exec(value) as RegExpExecArray;
+  const n = numberParse(match[1]);
+  const unit = (n === 0 ? lengthUnits.none : lengthUnits[match[2]]) || lengthUnits.none;
+  return [n, unit];
+};
+
+export const lengthFormat = (value: LengthValue): string => {
+  const n = value[0];
+  const unit = value[1];
+  return n === 0 ? '0' : numberFixed(n) + unitToName[(unit ? unit : lengthUnits.px)];
+};
+
+export const lengthOptimize = (values: LengthValue[]): LengthValue[] => {
+  const valueTypes = getTypes(values);
+
+  // all types are powers of two,
+  const oneType = isSquare(valueTypes);
+
+  // if only one type is detected, no conversion is necessary
+  if (oneType) {
+    return values;
+  }
+
+  // reject multiple relative units (no path for conversion right now)
+  const hasRelativeUnits = valueTypes >= lengthUnits.em;
+  if (hasRelativeUnits) {
+    throw `Can't mix multiple relative units`;
+  }
+
+  for (let i = 0, len = values.length; i < len; i++) {
+    toPixels(values[i]);
+  }
+
+  return values;
+};
+
+export const lengthInterpolate = (left: LengthValue, right: LengthValue, weight: number, out: LengthValue): LengthValue => {
+  out[0] = interpolate(left[0], right[0], weight);
+  out[1] = left[1] || right[1] || lengthUnits.none;
+  return out;
 };
 
 export const lengths: IMixer = mixer({
   getDefault(): LengthValue {
-    return [0, nil];
+    return [0, lengthUnits.none];
   },
-  parse(value: string): LengthValue {
-    const match = unitExpression.exec(value) as RegExpExecArray;
-    const n = numberParse(match[1]);
-    const unit = (n === 0 ? nil : match[2]) || nil;
-    return [n, unit];
-  },
-  format(value: LengthValue): string {
-    const n = value[0];
-    return n === 0 ? '0' : numberFixed(n) + (value[1] || px);
-  },
-  interpolate(left: LengthValue, right: LengthValue, weight: number, out: LengthValue): LengthValue {
-    out[0] = interpolate(left[0], right[0], weight);
-    out[1] = left[1] || right[1] || nil;
-    return out;
-  },
-  optimize(values: LengthValue[]): LengthValue[] {
-    const valueTypes = getTypes(values);
-
-    // all types are powers of two,
-    const oneType = isSquare(valueTypes);
-    const hasRelativeUnits = valueTypes >= lengthUnits.em;
-
-    // if only one type is detected, no conversion is necessary
-    if (oneType) {
-      return values.slice(0);
-    }
-    // reject multiple relative units (no path for conversion right now)
-    if (hasRelativeUnits) {
-      throw `Can't mix multiple relative units`;
-    }
-    return values.map(toPixels);
-  }
+  parse: lengthParse,
+  format: lengthFormat,
+  interpolate: lengthInterpolate,
+  optimize: lengthOptimize
 });
 

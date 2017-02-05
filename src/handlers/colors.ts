@@ -235,30 +235,36 @@ const parseColorFunction = (colorString: string): Channels | undefined => {
   return nil;
 };
 
+export const colorFormat = (x: Channels): string => {
+  const a = x[3];
+  return 'rgba('
+    + (a ? clamp(0, 255, x[0] / a) : x[0]) + ','
+    + (a ? clamp(0, 255, x[1] / a) : x[1]) + ','
+    + (a ? clamp(0, 255, x[2] / a) : x[2]) + ','
+    + numberFixed(clamp(0, 1, a)) + ')';
+};
+
+export const colorInterpolate = (l: Channels, r: Channels, o: number, out: Channels): Channels => {
+  out[0] = round(interpolate(l[0], r[0], o));
+  out[1] = round(interpolate(l[1], r[1], o));
+  out[2] = round(interpolate(l[2], r[2], o));
+  out[3] = interpolate(l[3], r[3], o);
+  return out;
+};
+
+export const colorParse = (input: string): Channels => {
+  const str = input.trim().toLowerCase();
+  return parseNamedColor(str) || parseHexCode(str) || parseColorFunction(str) || [0, 0, 0, 1];
+};
+
 export const colors: IMixer = mixer({
   getDefault(): Channels {
     return [0, 0, 0, 0];
   },
-  parse(input: string): Channels {
-    const str = input.trim().toLowerCase();
-    return parseNamedColor(str) || parseHexCode(str) || parseColorFunction(str) || [0, 0, 0, 1];
-  },
-  format(x: Channels): string {
-    const a = x[3];
-    return 'rgba('
-      + (a ? clamp(0, 255, x[0] / a) : x[0]) + ','
-      + (a ? clamp(0, 255, x[1] / a) : x[1]) + ','
-      + (a ? clamp(0, 255, x[2] / a) : x[2]) + ','
-      + numberFixed(clamp(0, 1, a)) + ')';
-  },
+  parse: colorParse,
+  format: colorFormat,
   optimize(values: Channels[]): Channels[] {
     return values;
   },
-  interpolate(l: Channels, r: Channels, o: number, out: Channels): Channels {
-    out[0] = round(interpolate(l[0], r[0], o));
-    out[1] = round(interpolate(l[1], r[1], o));
-    out[2] = round(interpolate(l[2], r[2], o));
-    out[3] = interpolate(l[3], r[3], o);
-    return out;
-  }
+  interpolate: colorInterpolate
 });

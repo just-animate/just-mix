@@ -31,10 +31,10 @@ const unitToName = flipLookup(angleUnits);
 
 export type AngleValue = { value: number, unit: AngleUnit };
 
-const reduceTypes = (n: AngleValue[]) => n.reduce((c: number, next: AngleValue) => c | (next[1] || 0), 0);
+const reduceTypes = (n: AngleValue[]) => n.reduce((c: number, next: AngleValue) => c | (next.unit || angleUnits.none), angleUnits.none);
 
 const toDegrees = (length: AngleValue): void => {
-  const unit = length[1];
+  const unit = length.unit;
   const co = unit === angleUnits.rad
     ? radToDegree : unit === angleUnits.grad
       ? gradToDegree : unit === angleUnits.turn
