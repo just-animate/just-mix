@@ -47,8 +47,6 @@ In this example, 1px is .1 or 10% of the way between 0px and 10px.
 Using JustMix is easy to use. Each css type has a simple function that two or more parameters.  This returns a function that accepts a number between 0 and 1.
 
 ### angles ()
-Finds a color between two angles
-
 [Demo on CodePen](http://codepen.io/notoriousb1t/pen/zNjXbP/?editors=0110)
 
 **Browser**
@@ -70,8 +68,6 @@ const zero = angles('300grad', '.25turn')(.5);
 ```
 
 ### colors ()
-Finds a color between two colors
-
 [Demo on CodePen](http://codepen.io/notoriousb1t/pen/vgjXaP/?editors=0010)
 
 **Browser**
@@ -93,8 +89,6 @@ const purple4 = colors('hsla(0, 100%, 50%, 1)', 'blue')(.5);
 ```
 
 ### lengths ()
-Finds a length between two lengths
-
 **Browser**
 ```ts
 const fivePixels = just.mix.lengths('0px', '10px')(.5);
@@ -112,8 +106,6 @@ const fiveRems = lengths('0rem', '10rem')(.5);
 ```
 
 ### numbers ()
-Finds a number between two numbers
-
 **Browser**
 ```ts
 const fiveA = just.mix.numbers('0', '10')(.5);
@@ -129,8 +121,6 @@ const fiveB = numbers(0, 10)(.5);
 ```
 
 ### percents ()
-Finds a percentage between two percentages
-
 **Browser**
 ```ts
 const fivePercent = just.mix.percents('0%', '10%')(.5);
@@ -142,7 +132,6 @@ import { percents } from 'just-mix';
 
 const fivePercent = percents('0%', '10%')(.5);
 ```
-
 
 ## What's next?
 
