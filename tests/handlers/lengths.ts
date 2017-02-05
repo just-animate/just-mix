@@ -314,25 +314,25 @@ describe('lengths', () => {
     });
   });
   describe('interpolate(px)', () => {
-    it('interpolate 0, 1px, 0 = 0', () => {
+    it('interpolate 0, 10px, 0 = 0', () => {
       const out = { value: 0, unit: lengthUnits.none } as LengthValue;
-      lengthInterpolate({ value: 0, unit: lengthUnits.none }, { value: 1, unit: lengthUnits.px }, 0, out);
+      lengthInterpolate({ value: 0, unit: lengthUnits.none }, { value: 10, unit: lengthUnits.px }, 0, out);
       assert.deepEqual({ value: 0, unit: lengthUnits.px }, out);
     });
-    it('interpolate 0, 1px, .5 = .5px', () => {
+    it('interpolate 0, 10px, .5 = 5px', () => {
       const out = { value: 0, unit: lengthUnits.none } as LengthValue;
-      lengthInterpolate({ value: 0, unit: lengthUnits.none }, { value: 1, unit: lengthUnits.px }, .5, out);
-      assert.deepEqual({ value: .5, unit: lengthUnits.px }, out);
+      lengthInterpolate({ value: 0, unit: lengthUnits.none }, { value: 10, unit: lengthUnits.px }, .5, out);
+      assert.deepEqual({ value: 5, unit: lengthUnits.px }, out);
     });
-    it('interpolate .5px, 1px, .5 = .75px', () => {
+    it('interpolate .5px, 10px, .5 = 8px', () => {
       const out = { value: 0, unit: lengthUnits.none } as LengthValue;
-      lengthInterpolate({ value: .5, unit: lengthUnits.px }, { value: 1, unit: lengthUnits.px }, .5, out);
-      assert.deepEqual({ value: .75, unit: lengthUnits.px }, out);
+      lengthInterpolate({ value: 5, unit: lengthUnits.px }, { value: 10, unit: lengthUnits.px }, .5, out);
+      assert.deepEqual({ value: 8, unit: lengthUnits.px }, out);
     });
-    it('interpolate 0, 1px, 1 = 1px', () => {
+    it('interpolate 0, 10px, 1 = 10px', () => {
       const out = { value: 0, unit: lengthUnits.none } as LengthValue;
-      lengthInterpolate({ value: 0, unit: lengthUnits.none }, { value: 1, unit: lengthUnits.px }, 1, out);
-      assert.deepEqual({ value: 1, unit: lengthUnits.px }, out);
+      lengthInterpolate({ value: 0, unit: lengthUnits.none }, { value: 10, unit: lengthUnits.px }, 1, out);
+      assert.deepEqual({ value: 10, unit: lengthUnits.px }, out);
     });
   });
   describe('interpolate(in)', () => {
@@ -645,17 +645,17 @@ describe('lengths', () => {
   });
 
   describe('lengths(px)', () => {
-    it('0, 1px, 0 = 0', () => {
-      assert.equal('0', lengths('0', '1px')(0));
+    it('0, 10px, 0 = 0', () => {
+      assert.equal('0', lengths('0', '10px')(0));
     });
-    it('0, 1px, .5 = .5px', () => {
-      assert.equal('0.500px', lengths('0', '1px')(.5));
+    it('0, 10px, .5 = 5px', () => {
+      assert.equal('5px', lengths('0', '10px')(.5));
     });
-    it('.5px, 1px, .5 = 0.750px', () => {
-      assert.equal('0.750px', lengths('.5px', '1px')(.5));
+    it('5px, 10px, .5 = 8px', () => {
+      assert.equal('8px', lengths('5px', '10px')(.5));
     });
-    it('0, 1px, 1 = 1px', () => {
-      assert.equal('1px', lengths('0', '1px')(1));
+    it('0, 10px, 1 = 10px', () => {
+      assert.equal('10px', lengths('0', '10px')(1));
     });
   });
 
@@ -882,9 +882,9 @@ describe('lengths', () => {
     it('tweens between multiple absolute lengths', () => {
       const tween = lengths('0', '5mm', '10cm');
       assert.equal('0', tween(0));
-      assert.equal('9.450px', tween(.25));
-      assert.equal('18.900px', tween(.5));
-      assert.equal('198.450px', tween(.75));
+      assert.equal('9px', tween(.25));
+      assert.equal('19px', tween(.5));
+      assert.equal('198px', tween(.75));
       assert.equal('378px', tween(1));
     });
   });

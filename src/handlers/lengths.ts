@@ -1,5 +1,5 @@
 import { numberFixed, numberParse, interpolate } from './numbers';
-import { mixer, IMixer, inToPx, cmToPx, mmToPx, ptToPx, pcToPx, qToPx, isSquare, flipLookup } from '../internal';
+import { mixer, IMixer, inToPx, cmToPx, mmToPx, ptToPx, pcToPx, qToPx, isSquare, flipLookup, round } from '../internal';
 
 const unitExpression = /^([\-]{0,1}[0-9]*[\.]{0,1}[0-9]*){1}(px|in|cm|mm|em|rem|pt|pc|ex|ch|vw|vh|vmin|vmax|q|%){0,1}$/i;
 
@@ -91,8 +91,17 @@ export const lengthOptimize = (values: LengthValue[]): LengthValue[] => {
 };
 
 export const lengthInterpolate = (left: LengthValue, right: LengthValue, weight: number, out: LengthValue): LengthValue => {
-  out.value = interpolate(left.value, right.value, weight);
-  out.unit = left.unit || right.unit || lengthUnits.none;
+  const unit = left.unit || right.unit || lengthUnits.none;
+
+  let value = interpolate(left.value, right.value, weight); 
+
+  // round px units (since a partial pixel is less than useful in most cases)  
+  if (unit === lengthUnits.px) {
+      value = round(value);
+  }
+
+  out.value = value;
+  out.unit = unit;
   return out;
 };
 
