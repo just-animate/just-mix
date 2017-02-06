@@ -1,4 +1,4 @@
-import { numberFixed, numberParse, interpolate } from './numbers';
+import { numberFixed, numberParse } from './numbers';
 import {
   mixer, IMixer, inToPx, cmToPx, mmToPx, ptToPx, pcToPx, qToPx, isSquare, flipLookup, round
 } from '../internal';
@@ -92,10 +92,10 @@ export const lengthOptimize = (values: LengthValue[]): LengthValue[] => {
   return values;
 };
 
-export const lengthInterpolate = (left: LengthValue, right: LengthValue, weight: number, out: LengthValue): LengthValue => {
-  const unit = left.unit || right.unit || lengthUnits.none;
+export const lengthInterpolate = (l: LengthValue, r: LengthValue, o: number, out: LengthValue): LengthValue => {
+  const unit = l.unit || r.unit || lengthUnits.none;
 
-  let value = interpolate(left.value, right.value, weight);
+  let value = l.value + ((r.value - l.value) * o);
 
   // round px units (since a partial pixel is less than useful in most cases)
   if (unit === lengthUnits.px) {

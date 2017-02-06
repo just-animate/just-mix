@@ -5,60 +5,60 @@ describe('color', () => {
 
   describe('format()', () => {
     it('formats [255,0,0,1] as rgba(255,0,0,1)', () => {
-      assert.equal('rgba(255,0,0,1)', colorFormat([255, 0, 0, 1]));
+      assert.equal('rgba(255,0,0,1)', colorFormat({ r: 255, g: 0, b: 0, a: 1 }));
     });
   });
 
   describe('parse()', () => {
     it('parses #FFF as white', () => {
-      assert.deepEqual([255, 255, 255, 1], colorParse('#FFF'));
+      assert.deepEqual({ r: 255, g: 255, b: 255, a: 1 }, colorParse('#FFF'));
     });
 
     it('parses #0000ff as blue', () => {
-      assert.deepEqual([0, 0, 255, 1], colorParse('#0000ff'));
+      assert.deepEqual({ r: 0, g: 0, b: 255, a: 1 }, colorParse('#0000ff'));
     });
 
     it('parses "red" as red', () => {
-      assert.deepEqual([255, 0, 0, 1], colorParse('red'));
+      assert.deepEqual({ r: 255, g: 0, b: 0, a: 1 }, colorParse('red'));
     });
 
     it('parses rgb(0, 255, 0) as green', () => {
-      assert.deepEqual([0, 255, 0, 1], colorParse('rgb(0,255,0)'));
+      assert.deepEqual({ r: 0, g: 255, b: 0, a: 1 }, colorParse('rgb(0,255,0)'));
     });
 
     it('parses rgba(0, 255, 0, 1) as green', () => {
-      assert.deepEqual([0, 255, 0, 1], colorParse('rgba(0,255,0,1)'));
+      assert.deepEqual({ r: 0, g: 255, b: 0, a: 1 }, colorParse('rgba(0,255,0,1)'));
     });
 
     it('parses hsl(0, 100%, 50%) as red', () => {
-      assert.deepEqual([255, 0, 0, 1], colorParse('hsl(0,100%,50%)'));
+      assert.deepEqual({ r: 255, g: 0, b: 0, a: 1 }, colorParse('hsl(0,100%,50%)'));
     });
 
     it('parses hsla(0, 100%, 50%, 1) as red', () => {
-      assert.deepEqual([255, 0, 0, 1], colorParse('hsl(0,100%,50%,1)'));
+      assert.deepEqual({ r: 255, g: 0, b: 0, a: 1 }, colorParse('hsl(0,100%,50%,1)'));
     });
   });
 
   describe('interpolate()', () => {
-    it('[255, 0, 0, 1], [255, 128, 128, 1], 0 = [255, 0, 0, 1]', () => {
-      const out = [0, 0, 0, 0] as Channels;
-      colorInterpolate([255, 0, 0, 1], [255, 128, 128, 1], 0, out);
-      assert.deepEqual([255, 0, 0, 1], out);
+    it('{ r: 255, g: 0, b: 0, a: 1 }, { r: 255, g: 128, b: 128, a: 1 }, 0 = { r: 255, g: 0, b: 0, a: 1 }', () => {
+      const out = { r: 0, g: 0, b: 0, a: 1 } as Channels;
+      colorInterpolate({ r: 255, g: 0, b: 0, a: 1 }, { r: 255, g: 128, b: 128, a: 1 }, 0, out);
+      assert.deepEqual({ r: 255, g: 0, b: 0, a: 1 }, out);
     });
-    it('[255, 64, 64, 1], [255, 128, 128, 1], .5 = [255, 0, 0, 1]', () => {
-      const out = [0, 0, 0, 0] as Channels;
-      colorInterpolate([255, 0, 0, 1], [255, 128, 128, 1], .5, out);
-      assert.deepEqual([255, 64, 64, 1], out);
+    it('{ r: 255, g: 64, b: 64, a: 1 }, { r: 255, g: 128, b: 128, a: 1 }, .5 = { r: 255, g: 0, b: 0, a: 1 }', () => {
+      const out = { r: 0, g: 0, b: 0, a: 1 } as Channels;
+      colorInterpolate({ r: 255, g: 0, b: 0, a: 1 }, { r: 255, g: 128, b: 128, a: 1 }, .5, out);
+      assert.deepEqual({ r: 255, g: 64, b: 64, a: 1 }, out);
     });
-    it('[255, 96, 96, 1], [255, 128, 128, 1], .5 = [255, 0, 0, 1]', () => {
-      const out = [0, 0, 0, 0] as Channels;
-      colorInterpolate([255, 0, 0, 1], [255, 128, 128, 1], .75, out);
-      assert.deepEqual([255, 96, 96, 1], out);
+    it('{ r: 255, g: 96, b: 96, a: 1 }, { r: 255, g: 128, b: 128, a: 1 }, .5 = { r: 255, g: 0, b: 0, a: 1 }', () => {
+      const out = { r: 0, g: 0, b: 0, a: 1 } as Channels;
+      colorInterpolate({ r: 255, g: 0, b: 0, a: 1 }, { r: 255, g: 128, b: 128, a: 1 }, .75, out);
+      assert.deepEqual({ r: 255, g: 96, b: 96, a: 1 }, out);
     });
-    it('[255, 128, 128, 1], [255, 128, 128, 1], .5 = [255, 0, 0, 1]', () => {
-      const out = [0, 0, 0, 0] as Channels;
-      colorInterpolate([255, 0, 0, 1], [255, 128, 128, 1], 1, out);
-      assert.deepEqual([255, 128, 128, 1], out);
+    it('{ r: 255, g: 128, b: 128, a: 1 }, { r: 255, g: 128, b: 128, a: 1 }, .5 = { r: 255, g: 0, b: 0, a: 1 }', () => {
+      const out = { r: 0, g: 0, b: 0, a: 1 } as Channels;
+      colorInterpolate({ r: 255, g: 0, b: 0, a: 1 }, { r: 255, g: 128, b: 128, a: 1 }, 1, out);
+      assert.deepEqual({ r: 255, g: 128, b: 128, a: 1 }, out);
     });
   });
 

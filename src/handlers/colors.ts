@@ -1,13 +1,9 @@
 import { clamp, mixer, IMixer, nil } from '../internal';
-import { numberFixed, interpolate, numberParse, percentParse, parseCssFunction } from '../handlers';
+import { numberFixed, numberParse, percentParse, parseCssFunction } from '../handlers';
 
-const round = Math.round;
 const hexRegex = /#(([a-f0-9]{6})|([a-f0-9]{3}))$/i;
 
-const R = 0, G = 1, B = 2,
-  H = 0, S = 1, L = 2;
-
-export type Channels = [number, number, number, number];
+export type Channels = { r: number, g: number, b: number, a: number };
 
 const namedColors: { [key: string]: [number, number, number] } = {
   aliceblue: [240, 248, 245],
@@ -128,7 +124,15 @@ const namedColors: { [key: string]: [number, number, number] } = {
 
 const parseNamedColor = (stringValue: string): Channels | undefined => {
   const c = namedColors[stringValue.toLowerCase()];
-  return !c ? nil : [c[0], c[1], c[2], c.length === 4 ? c[4] : 1];
+  if (!c) {
+    return nil;
+  }
+  return {
+    r: c[0],
+    g: c[1],
+    b: c[2],
+    a: c.length === 4 ? c[4] : 1
+  };
 };
 
 const parseHexCode = (stringValue: string): Channels | undefined  => {
@@ -148,20 +152,20 @@ const parseHexCode = (stringValue: string): Channels | undefined  => {
   const g = (hexColor >> 8) & 0xFF;
   const b = hexColor & 0xFF;
 
-  return [r, g, b, 1];
+  return { r, g, b, a: 1 };
 };
 
-const toRGB = (channels: Channels): void => {
-  const saturation = channels[S];
+const toRGB = (channels: Channels): Channels => {
+  const saturation = channels.g;
 
   // when saturation is 0, all channels equal lightness * 255
   if (saturation === 0) {
-    channels[R] = channels[G] = channels[B] = channels[L] * 255;
-    return;
+    channels.r = channels.g = channels.b *= 255;
+    return channels;
   }
 
-  const hue = channels[H] / 360;
-  const lightness = channels[L];
+  const hue = channels.r / 360;
+  const lightness = channels.b;
 
   const t2 = lightness < .5
     ? lightness * (1 + saturation)
@@ -169,9 +173,7 @@ const toRGB = (channels: Channels): void => {
 
   const t1 = 2 * lightness - t2;
 
-  let red = 0, green = 0, blue = 0;
-  let i = -1;
-  while (++i < 3) {
+  for (let i = 0; i < 3; i++) {
     let t3 = hue + 1 / 3 * -(i - 1);
     if (t3 < 0) {
       ++t3;
@@ -187,18 +189,18 @@ const toRGB = (channels: Channels): void => {
 
     // manually set variables instead of using an array
     if (i === 0) {
-      red = val;
+      channels.r = val;
     } else if (i === 1) {
-      green = val;
+      channels.g = val;
     } else {
-      blue = val;
+      channels.b = val;
     }
   }
 
-  channels[R] = red;
-  channels[G] = green;
-  channels[B] = blue;
+  return channels;
 };
+
+const getDefaultColor = (): Channels => ({ r: 0, g: 0, b: 0, a: 1 });
 
 const parseColorFunction = (colorString: string): Channels | undefined => {
   const c = parseCssFunction(colorString);
@@ -213,21 +215,21 @@ const parseColorFunction = (colorString: string): Channels | undefined => {
 
   const fn = c[0];
   if (fn === 'rgba' || fn === 'rgb') {
-    return [
-      parseFloat(c[1]),
-      parseFloat(c[2]),
-      parseFloat(c[3]),
-      hasAlpha ? parseFloat(c[4]) : 1
-    ];
+    return {
+      r: parseFloat(c[1]),
+      g: parseFloat(c[2]),
+      b: parseFloat(c[3]),
+      a: hasAlpha ? parseFloat(c[4]) : 1
+    };
   }
 
   if (fn === 'hsla' || fn === 'hsl') {
-    const hsla: Channels = [
-      numberParse(c[1]),
-      percentParse(c[2]),
-      percentParse(c[3]),
-      hasAlpha ? parseFloat(c[4]) : 1
-    ];
+    const hsla: Channels = {
+      r: numberParse(c[1]),
+      g: percentParse(c[2]),
+      b: percentParse(c[3]),
+      a: hasAlpha ? parseFloat(c[4]) : 1
+    };
     toRGB(hsla);
     return hsla;
   }
@@ -235,32 +237,40 @@ const parseColorFunction = (colorString: string): Channels | undefined => {
   return nil;
 };
 
+// export const colorFormat = (x: Channels): string => {
+//   const a = x.a;
+//   return 'rgba('
+//     + (a ? clamp(0, 255, x.r / a) : x.r) + ','
+//     + (a ? clamp(0, 255, x.g / a) : x.g) + ','
+//     + (a ? clamp(0, 255, x.b / a) : x.b) + ','
+//     + numberFixed(clamp(0, 1, a)) + ')';
+// };
+
+
 export const colorFormat = (x: Channels): string => {
-  const a = x[3];
+  const a = x.a;
   return 'rgba('
-    + (a ? clamp(0, 255, x[0] / a) : x[0]) + ','
-    + (a ? clamp(0, 255, x[1] / a) : x[1]) + ','
-    + (a ? clamp(0, 255, x[2] / a) : x[2]) + ','
+    + clamp(0, 255, x.r).toFixed(0) + ','
+    + clamp(0, 255, x.g).toFixed(0) + ','
+    + clamp(0, 255, x.b).toFixed(0) + ','
     + numberFixed(clamp(0, 1, a)) + ')';
 };
 
 export const colorInterpolate = (l: Channels, r: Channels, o: number, out: Channels): Channels => {
-  out[0] = round(interpolate(l[0], r[0], o));
-  out[1] = round(interpolate(l[1], r[1], o));
-  out[2] = round(interpolate(l[2], r[2], o));
-  out[3] = interpolate(l[3], r[3], o);
+  out.r = l.r + ((r.r - l.r) * o);
+  out.g = l.g + ((r.g - l.g) * o);
+  out.b = l.b + ((r.b - l.b) * o);
+  out.a = l.a + ((r.a - l.a) * o);
   return out;
 };
 
 export const colorParse = (input: string): Channels => {
   const str = input.trim().toLowerCase();
-  return parseNamedColor(str) || parseHexCode(str) || parseColorFunction(str) || [0, 0, 0, 1];
+  return parseNamedColor(str) || parseHexCode(str) || parseColorFunction(str) || getDefaultColor();
 };
 
 export const colors: IMixer = mixer({
-  getDefault(): Channels {
-    return [0, 0, 0, 0];
-  },
+  getDefault: getDefaultColor,
   parse: colorParse,
   format: colorFormat,
   optimize(values: Channels[]): Channels[] {
