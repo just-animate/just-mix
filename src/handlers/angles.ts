@@ -6,6 +6,7 @@ import {
   isSquare,
   mixer,
   radToDegree,
+  degToRad,
   turnToDegree
 } from '../internal';
 
@@ -50,24 +51,34 @@ const toDegrees = (length: AngleValue): void => {
   length.unit = angleUnits.deg;
 };
 
+export const toRadians = (length: AngleValue): void => {
+  toDegrees(length);
+  length.unit = angleUnits.rad;
+  length.value *= degToRad;
+};
+
+export const angleParse = (value: string): AngleValue => {
+  const match = unitExpression.exec(value) as RegExpExecArray;
+  const n = numberParse(match[1]);
+  const unit = (n === 0 ? angleUnits.none : angleUnits[match[2]] || angleUnits.deg);
+  return {
+    value: n,
+    unit: unit
+  };
+};
+
+export const angleFormat = (value: AngleValue): string => {
+  const n = value.value;
+  const unit = value.unit || angleUnits.deg;
+  return n === 0 ? '0' : numberFixed(n) + unitToName[unit];
+};
+
 export const angles: IMixer = mixer<AngleValue>({
   getDefault(): AngleValue {
     return { value: 0, unit: angleUnits.none };
   },
-  parse(value: string): AngleValue {
-    const match = unitExpression.exec(value) as RegExpExecArray;
-    const n = numberParse(match[1]);
-    const unit = (n === 0 ? angleUnits.none : angleUnits[match[2]] || angleUnits.deg);
-    return {
-      value: n,
-      unit: unit
-    };
-  },
-  format(value: AngleValue): string {
-    const n = value.value;
-    const unit = value.unit || angleUnits.deg;
-    return n === 0 ? '0' : numberFixed(n) + unitToName[unit];
-  },
+  parse: angleParse,
+  format: angleFormat,
   interpolate(left: AngleValue, right: AngleValue, weight: number, out: AngleValue): AngleValue {
     const value = interpolate(left.value, right.value, weight);
     const unit = value === 0 ? angleUnits.none : left.unit || right.unit || angleUnits.none;

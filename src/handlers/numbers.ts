@@ -10,8 +10,10 @@ export const interpolate = (l: number, r: number, o: number): number => {
   return l + ((r - l) * o);
 };
 
+const map = Array.prototype.map;
+
 export const numbers = (function (): (weight: number) => string {
-  const values = Array.prototype.map.call(arguments, numberParse);
+  const values = map.call(arguments, numberParse);
   const lastIndex = values.length - 1;
 
   return (weight: number): string => {

@@ -15,3 +15,6 @@ export const qToPx = mmToPx / 4;
 export const radToDegree = 360 / tau;
 export const turnToDegree = 360;
 export const gradToDegree = .9;
+
+export const degToRad = 1 / radToDegree;
+

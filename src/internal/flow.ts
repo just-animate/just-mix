@@ -15,8 +15,8 @@ export const flowSignature = <T1, T2>(...parsers: Func[]): { (t1: T1): T2 } => {
 export const flow: typeof flowSignature = function<T1, T2>() {
   const args = arguments, len = args.length;
   return (t1: T1): T2 => {
-    let i = -1, r = t1 as T1 | T2;
-    while (++i < len) {
+    let r = t1 as T1 | T2;
+    for (let i = 0; i < len; i++) {
       r = args[i](r);
     }
     return r as T2;
